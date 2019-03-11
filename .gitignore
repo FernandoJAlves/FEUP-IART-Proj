@@ -494,3 +494,5 @@ healthchecksdb
 
 # End of https://www.gitignore.io/api/clion,macos,linux,windows,visualstudio
 run
+
+CMakeLists\.txt
