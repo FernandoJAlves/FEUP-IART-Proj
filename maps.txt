@@ -8,4 +8,4 @@ X000X
 XXXXX
 1           //Nº robots
 1           //linha inicial robot_1
-1           //linha inicial robot_2
+1           //coluna inicial robot_1
