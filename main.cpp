@@ -5,26 +5,17 @@
 int main() 
 {
     
-    mainMenu();
+    //mainMenu();
 
 
 
 
     //TESTING
-    vector<vector<int>> v = {{0,1},{2,3}};
-
-    for(int i = 0; i < v[0].size(); i++){
-        cout << v[0][i] << '\n';
-    }
+    vector<vector<int>> v = {{1,1,1},{1,0,1},{1,1,1}};
 
     Map m;
     m.setLayout(v);
-
-    vector<vector<int>> v2 = m.getLayout();
-
-    for(int i = 0; i < v2[0].size(); i++){
-        cout << v2[0][i] << '\n';
-    }
+    m.displayLayout();
 
     return 0;
 }
