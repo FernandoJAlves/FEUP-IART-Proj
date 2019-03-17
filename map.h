@@ -4,16 +4,16 @@ using namespace std;
 class Map
 {
   int n_cols, n_lines;
-  vector<vector<int>> layout;
+  vector<vector<char>> layout;
 
 public:
-  vector<vector<int>> getLayout() { return layout; }
-  void setLayout(vector<vector<int>> l);
+  vector<vector<char>> getLayout() { return layout; }
+  void setLayout(vector<vector<char>> l);
   void displayLayout();
-  void translateInt(int);
+  void printCell(char c);
 };
 
-void Map::setLayout(vector<vector<int>> l)
+void Map::setLayout(vector<vector<char>> l)
 {
   layout = l;
 }
@@ -24,26 +24,23 @@ void Map::displayLayout()
   {
     for (unsigned int c = 0; c < layout[0].size(); c++)
     {
-      translateInt(layout[l][c]);
+      //check if any robot is in that cell, else do printCell
+      printCell(layout[l][c]);
     }
     cout << '\n';
   }
 }
 
-void Map::translateInt(int n)
+void Map::printCell(char c)
 {
-  switch (n)
+  switch (c)
   {
   case 0:
     cout << ' ';
     break;
 
-  case 1:
-    cout << 'X';
-    break;
-
   default:
-    cout << n;
+    cout << c;
     break;
   }
 }

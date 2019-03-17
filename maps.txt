@@ -1,11 +1,11 @@
-NEWMAP  //
-5
-5
-11111
-101A1
-10001
-10001
-11111
-1
-1
-1
+NEWMAP      //Separador de mapa
+5           //Nº linhas
+5           //Nº colunas
+XXXXX       //Layout
+X0XAX       //Letra A simboliza uma casa final
+X000X
+X000X
+XXXXX
+1           //Nº robots
+1           //linha inicial robot_1
+1           //linha inicial robot_2
