@@ -36,7 +36,6 @@ void Map::displayLayout()
   {
     for (unsigned int c = 0; c < layout[0].size(); c++)
     {
-      //check if any robot is in that cell, else do printCell
       printCell(layout[l][c]);
     }
     cout << '\n';

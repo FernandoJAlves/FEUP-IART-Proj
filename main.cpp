@@ -13,6 +13,16 @@ int main()
 
     //mainMenu();
 
+
+    //ciclo de jogo
+
+    /*
+        1- Mostrar tabuleiro atual;
+        2- Pedir jogada (SP) // Calcular jogada (BP);
+        3- Mover Robot pedido
+
+    */
+
     //TESTING
     vector<vector<char>> v = {{'1', '1', '1', '1', '1'},
                               {'1', '0', '1', 'A', '1'},    
