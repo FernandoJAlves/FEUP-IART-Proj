@@ -17,9 +17,21 @@ int main()
     //ciclo de jogo
 
     /*
+        SINGLEPLAYER
+        
         1- Mostrar tabuleiro atual;
-        2- Pedir jogada (SP) // Calcular jogada (BP);
-        3- Mover Robot pedido
+        2- Check if jogo acabou; -> Se acabou não pede/calcula jogada e dá uma mensagem de vitoria
+        3- Pedir jogada (SP) // Calcular jogada (Quando pede ajuda);
+        4- Mover Robot pedido;
+
+        MULTIPLAYER
+
+        1- Calcular melhor conjunto de jogadas
+        2- Mostrar estado inicial (sleep(1))
+        3- While houver jogadas:
+            1- dar pop da 1ª jogada
+            2- executar a jogada
+            3- mostrar estado atual (sleep(1))
 
     */
 
