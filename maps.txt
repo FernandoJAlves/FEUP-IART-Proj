@@ -6,6 +6,10 @@ X0XAX       //Letra A simboliza uma casa final
 X000X
 X000X
 XXXXX
-1           //Nº robots
+1           //Nº robots n-helpers
 1           //linha inicial robot_1
 1           //coluna inicial robot_1
+1           //linha final robot_1 
+3           //coluna final robot_1
+a           //icon robot_1
+0           //Nº robots helpers

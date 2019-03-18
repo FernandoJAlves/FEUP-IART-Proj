@@ -49,6 +49,9 @@ void Map::printCell(char c)
   case '0':
     cout << ' ';
     break;
+  case '1':
+    cout << 'X';
+    break;
 
   default:
     cout << c;
@@ -71,6 +74,7 @@ void Map::displayWithRobots(vector<vector<char>> v)
   {
     for (unsigned int c = 0; c < v[0].size(); c++)
     {
+      cout << ' ';
       printCell(v[l][c]);
     }
     cout << '\n';

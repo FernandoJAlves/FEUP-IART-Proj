@@ -8,6 +8,8 @@ class Robot {
   public:
     int line_c, col_c;
     char icon;
+    bool is_helper;
+
     //void move(Map map, char dir);
 };
 
