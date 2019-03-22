@@ -1,4 +1,4 @@
-SRC = main.cpp menus.cpp
+SRC = main.cpp menus.cpp map.cpp game.cpp
 
 
 all:
