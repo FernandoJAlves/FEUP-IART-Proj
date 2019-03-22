@@ -10,13 +10,13 @@ class Map
 {
   int n_cols, n_lines;
   vector<vector<char>> layout;
-  vector<vector<char>> layoutWithRobots;
   vector<pair<int,int>> init_pos;
   int n_finalPos;
   vector<pair<int,int>> final_pos;
   
 
 public:
+  vector<vector<char>> layoutWithRobots;
   vector<Robot> robots;
   vector<vector<char>> getLayout() { return layout; }
   void setLayout(vector<vector<char>> l);
@@ -24,7 +24,7 @@ public:
   void printCell(char c);
   void createLayoutWithRobots();
   void displayWithRobots(vector<vector<char>> l);
-  void moveRobot(char robotChar, char dir);
+  void moveRobot(int robot, int dir);
 };
 
 

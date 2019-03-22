@@ -16,12 +16,14 @@ public:
   Game(){};
   Game(int gamemode);
 
-  vector<Map> maps;
   bool isGameOver = false;
   int level = 0;
 
   void soloMode();
   void botMode();
+
+  int interpretInputRobot(char robot); //devolve o Index do robot no array
+  int interpretInputDir(char dir); //devolve a dir a mover
   
 
 };

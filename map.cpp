@@ -57,7 +57,10 @@ void Map::displayWithRobots(vector<vector<char>> v)
   }
 }
 
-void Map::moveRobot(char robotChar, char dir){
+void Map::moveRobot(int robot, int dir){
+
+
+
 
 }
 
