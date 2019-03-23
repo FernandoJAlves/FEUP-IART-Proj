@@ -65,7 +65,7 @@ void Game::readDataFromFiles()
     
     ifstream f_input("./maps.txt");
     string input;
-    istringstream iss(input);
+    istringstream iss;
     getline(f_input,input); //To catch the first NEWMAP
     ui state = 0;
     while(getline(f_input,input))
@@ -74,6 +74,7 @@ void Game::readDataFromFiles()
         {
             case 0:
                 int cols, lines;
+                iss.str(input);
                 iss >> lines >> cols;
                 //falta povoar aqui o resto dos private members de map //TODO
                 state = 1;
@@ -112,6 +113,7 @@ void Game::readDataFromFiles()
                 else 
                     r.is_helper = true;
                 input = input.substr(4); // get the init and final coordinates all together on one string
+                iss.str(input);
                 iss >> r.line_c >> r.col_c >> r.final_line >> r.final_col;
                 m.robots.push_back(r);
                 break;
