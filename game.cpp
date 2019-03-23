@@ -16,30 +16,29 @@ Game::Game(int gamemode)
     vector<vector<char>> v;
 
     //Ler aqui dos ficheiros
-    stringstream ss;
     
     ifstream f_input("./maps.txt");
     string input;
     getline(f_input,input); //To catch the first NEWMAP
-    ui state = 1;
+    ui state = 0;
     while(getline(f_input,input))
     {
         switch(state)
         {
             case 0:
-                //mata
+                istringstream iss (input);
+                int cols, lines;
+                iss >> lines >> cols;
+                //falta povoar aqui o map
+                state = 1;
                 break;
             case 1:
-                int cols, lines;
-                ss >> lines >> cols;
-                //falta povoar aqui o map
-                state = 2;
-                break;
-            case 2:
                 if(input == "ROBOTS")
                 {
-                    state = 3;
-                    continue;
+                    state = 2;
+                    m.setLayout(v);
+                    v.clear();
+                    break;
                 }
                 vector<char> in_v;
                 for(ui i=0; i < input.size();i++)
@@ -53,8 +52,25 @@ Game::Game(int gamemode)
                 }
                 v.push_back(in_v);
                 break;
-            case 3:
+            case 2:
+                if(input == "NEWMAP")
+                {
+                    state = 0;
+                    maps.push_back(m);
+                    break;
+                }
+                r.icon = input[0];
+                if(input[2] == "P")
+                    r.is_helper = false;
+                else 
+                    r.is_helper = true;
+                input = input.substr(4); // get the init and final coordinates all together on one string
+                istringstream iss (input);
+                iss >> r.line_c >> r.col_c >> r.final_line >> r.final_col;
+                m.robots.push_back(r);
+                break;
 
+            default:
         }
     }
 
