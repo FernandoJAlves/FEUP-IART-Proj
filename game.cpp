@@ -137,31 +137,43 @@ void Game::soloMode()
     while (!isGameOver)
     {
         
-        maps.at(level).createLayoutWithRobots();
-        maps.at(level).displayWithRobots(maps.at(level).layoutWithRobots);
-        bool isInputValid = true;
+        Map& currMap = maps.at(level);          //reference to the current map
+        currMap.createLayoutWithRobots();           //updates layoutWithRobots
+        currMap.displayWithRobots(currMap.layoutWithRobots);
+        bool isInputValid = true;           //to check if an input is valid
         int index, dir;
+
         do
         {
+            isInputValid = true;
             cout << "Move: ";
             char r, d;
             cin >> r >> d;
             cin.ignore(256, '\n');
             index = interpretInputRobot(r);
             dir = interpretInputDir(d);
+            
+            //Checks for valid input
             if(index == -1)
                 isInputValid = false;
             if(dir == -1)
-                isInputValid = false;  
+                isInputValid = false;
+            if(index >= (int)currMap.robots.size()) //check if the selected robot exists
+                isInputValid = false;
+
+            //Print if error
+            if(!isInputValid)
+                cout << "Invalid Input!\n";
 
         }while (!isInputValid);
 
-        cout << "Robot: " << index << "\nDir: " << dir << '\n';
+        //cout << "Robot: " << index << "\nDir: " << dir << '\n';
         if(dir == 4){
             isGameOver = true;
             continue;
         }
-    
+
+        currMap.moveRobot(index, dir);
     }
 }
 

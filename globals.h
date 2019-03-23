@@ -6,6 +6,7 @@
 using namespace std;
 
 typedef unsigned int ui;
+typedef unsigned int u_int;
 
 vector<Map> maps;
 
