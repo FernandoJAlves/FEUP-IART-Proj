@@ -6,75 +6,18 @@
 #include "robot.h"
 #include <vector>
 #include <cctype>
+
 using namespace std;
 
 Game::Game(int gamemode)
 {
 
+    //Ler aqui dos ficheiros
+    //readDataFromFiles(); still fixing a small thing 
+    
     Map m;
     Robot r;
-    vector<vector<char>> v;
-
-    //Ler aqui dos ficheiros
     
-    ifstream f_input("./maps.txt");
-    string input;
-    getline(f_input,input); //To catch the first NEWMAP
-    ui state = 0;
-    while(getline(f_input,input))
-    {
-        switch(state)
-        {
-            case 0:
-                istringstream iss (input);
-                int cols, lines;
-                iss >> lines >> cols;
-                //falta povoar aqui o map
-                state = 1;
-                break;
-            case 1:
-                if(input == "ROBOTS")
-                {
-                    state = 2;
-                    m.setLayout(v);
-                    v.clear();
-                    break;
-                }
-                vector<char> in_v;
-                for(ui i=0; i < input.size();i++)
-                {
-                    if(input[i] == 'X')
-                        in_v.push_back('1');
-                    else if(input[i] == '0')
-                        in_v.push_back('0');
-                    else 
-                        in_v.push_back(input[i]);
-                }
-                v.push_back(in_v);
-                break;
-            case 2:
-                if(input == "NEWMAP")
-                {
-                    state = 0;
-                    maps.push_back(m);
-                    break;
-                }
-                r.icon = input[0];
-                if(input[2] == "P")
-                    r.is_helper = false;
-                else 
-                    r.is_helper = true;
-                input = input.substr(4); // get the init and final coordinates all together on one string
-                istringstream iss (input);
-                iss >> r.line_c >> r.col_c >> r.final_line >> r.final_col;
-                m.robots.push_back(r);
-                break;
-
-            default:
-        }
-    }
-
-    /*
     vector<vector<char>> v = {{'1', '1', '1', '1', '1', '1', '1'},
                               {'1', '0', '1', '0', '0', '0', '1'},
                               {'1', '0', '1', '0', '1', '0', '1'},
@@ -91,9 +34,7 @@ Game::Game(int gamemode)
     r.icon = 'a';
     m.robots.push_back(r);
 
-    maps.push_back(m);*/
-
-    f_input.close();
+    maps.push_back(m);
 
     switch (gamemode)
     {
@@ -111,6 +52,73 @@ Game::Game(int gamemode)
         cout << "Invalid Mode\n";
         break;
     }
+}
+
+void Game::readDataFromFiles()
+{
+    Map m;
+    Robot r;
+    vector<vector<char>> v;
+    vector<char> in_v;
+
+    //Ler aqui dos ficheiros
+    
+    ifstream f_input("./maps.txt");
+    string input;
+    istringstream iss(input);
+    getline(f_input,input); //To catch the first NEWMAP
+    ui state = 0;
+    while(getline(f_input,input))
+    {
+        switch(state)
+        {
+            case 0:
+                int cols, lines;
+                iss >> lines >> cols;
+                //falta povoar aqui o resto dos private members de map //TODO
+                state = 1;
+                break;
+            case 1:
+                if(input == "ROBOTS")
+                {
+                    state = 2;
+                    m.setLayout(v);
+                    v.clear();
+                    break;
+                }
+                
+                for(ui i=0; i < input.size();i++)
+                {
+                    if(input[i] == 'X')
+                        in_v.push_back('1');
+                    else if(input[i] == '0')
+                        in_v.push_back('0');
+                    else 
+                        in_v.push_back(input[i]);
+                }
+                v.push_back(in_v);
+                in_v.clear();
+                break;
+            case 2:
+                if(input == "NEWMAP")
+                {
+                    state = 0;
+                    maps.push_back(m);
+                    break;
+                }
+                r.icon = input[0];
+                if(input[2] == 'P')
+                    r.is_helper = false;
+                else 
+                    r.is_helper = true;
+                input = input.substr(4); // get the init and final coordinates all together on one string
+                iss >> r.line_c >> r.col_c >> r.final_line >> r.final_col;
+                m.robots.push_back(r);
+                break;
+        }
+    }
+
+    f_input.close();
 }
 
 void Game::soloMode()

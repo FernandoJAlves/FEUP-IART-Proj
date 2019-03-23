@@ -19,6 +19,8 @@ public:
   bool isGameOver = false;
   int level = 0;
 
+  void readDataFromFiles();
+
   void soloMode();
   void botMode();
 
