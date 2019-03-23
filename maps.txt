@@ -1,15 +1,9 @@
-NEWMAP      //Separador de mapa
-5           //Nº linhas
-5           //Nº colunas
-XXXXX       //Layout
-X0XAX       //Letra A simboliza uma casa final
+NEWMAP         //Separador de mapa
+5 5            //Nº linhas , Nº colunas
+XXXXX          //Layout
+X0XAX          //Letra A simboliza uma casa final
 X000X
 X000X
 XXXXX
-1           //Nº robots n-helpers
-1           //linha inicial robot_1
-1           //coluna inicial robot_1
-1           //linha final robot_1 
-3           //coluna final robot_1
-a           //icon robot_1
-0           //Nº robots helpers
+ROBOTS         //Separador para os robos do mapa
+a P 1 1 1 3    //a icon robot_1 and H- Robot Helper or P-player, linha e coluna ini robot_1, linha e coluna final robot_1

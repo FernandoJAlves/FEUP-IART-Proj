@@ -21,7 +21,8 @@ int mainMenu()
         Game(1);
         break;
     case 0:
-        return 0;
+        cout << "\nExiting game...\n";
+        exit(1);
 
     default:
         cout << "Invalid mode input!\n";

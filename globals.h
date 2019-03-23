@@ -5,6 +5,8 @@
 #include "map.h"
 using namespace std;
 
+typedef unsigned int ui;
+
 vector<Map> maps;
 
 #endif

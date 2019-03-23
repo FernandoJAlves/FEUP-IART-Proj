@@ -11,8 +11,54 @@ using namespace std;
 Game::Game(int gamemode)
 {
 
-    //Ler aqui dos ficheiros
+    Map m;
+    Robot r;
+    vector<vector<char>> v;
 
+    //Ler aqui dos ficheiros
+    stringstream ss;
+    
+    ifstream f_input("./maps.txt");
+    string input;
+    getline(f_input,input); //To catch the first NEWMAP
+    ui state = 1;
+    while(getline(f_input,input))
+    {
+        switch(state)
+        {
+            case 0:
+                //mata
+                break;
+            case 1:
+                int cols, lines;
+                ss >> lines >> cols;
+                //falta povoar aqui o map
+                state = 2;
+                break;
+            case 2:
+                if(input == "ROBOTS")
+                {
+                    state = 3;
+                    continue;
+                }
+                vector<char> in_v;
+                for(ui i=0; i < input.size();i++)
+                {
+                    if(input[i] == 'X')
+                        in_v.push_back('1');
+                    else if(input[i] == '0')
+                        in_v.push_back('0');
+                    else 
+                        in_v.push_back(input[i]);
+                }
+                v.push_back(in_v);
+                break;
+            case 3:
+
+        }
+    }
+
+    /*
     vector<vector<char>> v = {{'1', '1', '1', '1', '1', '1', '1'},
                               {'1', '0', '1', '0', '0', '0', '1'},
                               {'1', '0', '1', '0', '1', '0', '1'},
@@ -21,9 +67,7 @@ Game::Game(int gamemode)
                               {'1', '0', '0', '0', '1', 'A', '1'},
                               {'1', '1', '1', '1', '1', '1', '1'}};
 
-    Map m;
     m.setLayout(v);
-    Robot r;
     r.line_c = 1;
     r.col_c = 1;
     r.final_line = 5;
@@ -31,7 +75,9 @@ Game::Game(int gamemode)
     r.icon = 'a';
     m.robots.push_back(r);
 
-    maps.push_back(m);
+    maps.push_back(m);*/
+
+    f_input.close();
 
     switch (gamemode)
     {
