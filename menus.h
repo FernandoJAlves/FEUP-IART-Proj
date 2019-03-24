@@ -1,2 +1,3 @@
 int mainMenu();
+int botModeMenu();
 

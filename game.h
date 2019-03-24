@@ -14,7 +14,7 @@ class Game
  
 public:
   Game(){};
-  Game(int gamemode);
+  Game(int gamemode, int searchMethod);
 
   bool isGameOver = false;
   int level = 0;
@@ -22,7 +22,7 @@ public:
   void readDataFromFiles();
 
   void soloMode();
-  void botMode();
+  void botMode(int searchMethod);
 
   int interpretInputRobot(char robot); //devolve o Index do robot no array
   int interpretInputDir(char dir); //devolve a dir a mover

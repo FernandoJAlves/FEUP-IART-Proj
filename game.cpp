@@ -6,15 +6,16 @@
 #include "robot.h"
 #include <vector>
 #include <cctype>
+#include <unistd.h>
 
 using namespace std;
 
-Game::Game(int gamemode)
+Game::Game(int gamemode, int searchMethod)
 {
 
     //Ler aqui dos ficheiros
     readDataFromFiles();
-    
+
     /*
     Map m;
     Robot r;
@@ -47,7 +48,7 @@ Game::Game(int gamemode)
 
     case 1:
         cout << "Starting a AI Game\n";
-        this->botMode();
+        this->botMode(searchMethod);
         break;
 
     default:
@@ -64,65 +65,65 @@ void Game::readDataFromFiles()
     vector<char> in_v;
 
     //Ler aqui dos ficheiros
-    
+
     ifstream f_input("./maps.txt");
     string input;
     istringstream iss;
-    getline(f_input,input); //To catch the first NEWMAP
+    getline(f_input, input); //To catch the first NEWMAP
     u_int state = 0;
-    while(getline(f_input,input))
+    while (getline(f_input, input))
     {
-        switch(state)
+        switch (state)
         {
-            case 0:
-                int cols, lines;
-                iss.str(input);
-                iss >> lines >> cols;
-                m.setColsLines(cols,lines);
-                state = 1;
+        case 0:
+            int cols, lines;
+            iss.str(input);
+            iss >> lines >> cols;
+            m.setColsLines(cols, lines);
+            state = 1;
+            break;
+        case 1:
+            if (input == "ROBOTS")
+            {
+                state = 2;
+                m.setLayout(v);
+                v.clear();
                 break;
-            case 1:
-                if(input == "ROBOTS")
-                {
-                    state = 2;
-                    m.setLayout(v);
-                    v.clear();
-                    break;
-                }
-                
-                for(u_int i=0; i < input.size();i++)
-                {
-                    if(input[i] == 'X')
-                        in_v.push_back('1');
-                    else if(input[i] == '0')
-                        in_v.push_back('0');
-                    else 
-                        in_v.push_back(input[i]);
-                }
-                v.push_back(in_v);
-                in_v.clear();
+            }
+
+            for (u_int i = 0; i < input.size(); i++)
+            {
+                if (input[i] == 'X')
+                    in_v.push_back('1');
+                else if (input[i] == '0')
+                    in_v.push_back('0');
+                else
+                    in_v.push_back(input[i]);
+            }
+            v.push_back(in_v);
+            in_v.clear();
+            break;
+        case 2:
+            if (input == "NEWMAP")
+            {
+                state = 0;
+                maps.push_back(m);
+                m.clearPosVectors();
                 break;
-            case 2:
-                if(input == "NEWMAP")
-                {
-                    state = 0;
-                    maps.push_back(m);
-                    m.clearPosVectors();
-                    break;
-                }
-                r.icon = input[0];
-                if(input[2] == 'P')
-                    r.is_helper = false;
-                else 
-                    r.is_helper = true;
-                input = input.substr(4); // get the init and final coordinates all together on one string
-                iss.clear();
-                iss.str(input);
-                iss >> r.line_c >> r.col_c >> r.final_line >> r.final_col;
-                m.addInitPos(r.col_c,r.line_c);
-                m.addFinalPos(r.final_col,r.final_line);
-                m.robots.push_back(r);
-                break;
+            }
+            r.icon = input[0];
+            if (input[2] == 'P')
+                r.is_helper = false;
+            else
+                r.is_helper = true;
+            input = input.substr(4); // get the init and final coordinates all together on one string
+            iss.clear();
+            iss.str(input);
+            iss >> r.line_c >> r.col_c >> r.final_line >> r.final_col;
+            m.addInitPos(r.col_c, r.line_c);
+            m.addFinalPos(r.final_col, r.final_line);
+            m.robots.push_back(r);
+            break;
         }
     }
 
@@ -144,11 +145,11 @@ void Game::soloMode()
 
     while (!isGameOver)
     {
-        
-        Map& currMap = maps.at(level);          //reference to the current map
-        currMap.createLayoutWithRobots();           //updates layoutWithRobots
+
+        Map &currMap = maps.at(level);    //reference to the current map
+        currMap.createLayoutWithRobots(); //updates layoutWithRobots
         currMap.displayWithRobots(currMap.layoutWithRobots);
-        bool isInputValid = true;           //to check if an input is valid
+        bool isInputValid = true; //to check if an input is valid
         int index, dir;
 
         do
@@ -160,53 +161,55 @@ void Game::soloMode()
             cin.ignore(256, '\n');
             index = interpretInputRobot(r);
             dir = interpretInputDir(d);
-            
+
             //Checks for valid input
-            if(index == -1)
+            if (index == -1)
                 isInputValid = false;
-            if(dir == -1)
+            if (dir == -1)
                 isInputValid = false;
-            if(index >= (int)currMap.robots.size()) //check if the selected robot exists
+            if (index >= (int)currMap.robots.size()) //check if the selected robot exists
                 isInputValid = false;
 
             //Print if error
-            if(!isInputValid)
+            if (!isInputValid)
                 cout << "Invalid Input!\n";
 
-        }while (!isInputValid);
+        } while (!isInputValid);
 
         //cout << "Robot: " << index << "\nDir: " << dir << '\n';
-        if(dir == 4){
+        if (dir == 4)
+        {
             isGameOver = true;
             continue;
         }
 
         currMap.moveRobot(index, dir);
 
-        if(currMap.checkGameOver()){
+        if (currMap.checkGameOver())
+        {
 
-            currMap.createLayoutWithRobots();           //updates layoutWithRobots
+            currMap.createLayoutWithRobots(); //updates layoutWithRobots
             currMap.displayWithRobots(currMap.layoutWithRobots);
-            
+
             //TODO - Increment level if yes, go back to main menu if no, loop if invalid input
             char c;
             cout << "Congratulations! Proceed to next level? (Y/N):  ";
             cin >> c;
             return;
-
         }
-
     }
 }
 
 int Game::interpretInputRobot(char robot)
 {
     int aux = toupper(robot);
-    int index = aux-65; //A maiuculo = 65, por isso index começa em 0
-    if(index >= 0 && index < 20){ //aceita 0 a 19 robots
+    int index = aux - 65; //A maiuculo = 65, por isso index começa em 0
+    if (index >= 0 && index < 20)
+    { //aceita 0 a 19 robots
         return index;
     }
-    else{
+    else
+    {
         return -1;
     }
 }
@@ -215,43 +218,40 @@ int Game::interpretInputDir(char dir)
 {
     switch (dir)
     {
-        case 'w':
-        case 'W':
-            //up
-            return 0;
-        case 'd':
-        case 'D':
-            //right
-            return 1;
-        case 's':
-        case 'S':
-            //down
-            return 2;
-        case 'a':
-        case 'A':
-            //left
-            return 3;
-        case 'q':
-        case 'Q':
-            //leave
-            return 4;
-        case 'h':
-        case 'H':
-            //help
-            return 5;    
+    case 'w':
+    case 'W':
+        //up
+        return 0;
+    case 'd':
+    case 'D':
+        //right
+        return 1;
+    case 's':
+    case 'S':
+        //down
+        return 2;
+    case 'a':
+    case 'A':
+        //left
+        return 3;
+    case 'q':
+    case 'Q':
+        //leave
+        return 4;
+    case 'h':
+    case 'H':
+        //help
+        return 5;
 
-        default:
-            return -1;
+    default:
+        return -1;
     }
-
 }
 
-void Game::botMode()
+void Game::botMode(int searchMethod)
 {
 
     /*
-
-
         MULTIPLAYER
 
         1- Calcular melhor conjunto de jogadas
@@ -262,4 +262,43 @@ void Game::botMode()
             3- mostrar estado atual (sleep(1))
 
     */
+
+    /*
+        SEARCH METHODS:
+        1- DFS
+        2- BFS
+        3- Aprofundamento Progressivo
+        4- Custo Uniforme
+        5- Gulosa
+        6- A*
+   */
+
+    while (!isGameOver)
+    {
+
+        vector<pair<int, int>> moveSeq = {{0, 2}, {0, 1}, {0, 0}, {0, 1}, {0, 2}}; //calculada usando o method especificado
+
+        Map &currMap = maps.at(level); //reference to the current map
+        u_int moveIndex = 0;
+
+        while (moveIndex < moveSeq.size())
+        {
+            currMap.createLayoutWithRobots(); //updates layoutWithRobots
+            currMap.displayWithRobots(currMap.layoutWithRobots);
+
+            pair<int, int> p = moveSeq.at(moveIndex);
+            moveIndex++;
+            sleep(1);
+            currMap.moveRobot(p.first, p.second);
+        }
+
+        currMap.createLayoutWithRobots(); //updates layoutWithRobots
+        currMap.displayWithRobots(currMap.layoutWithRobots);
+
+        //TODO - Increment level if yes, go back to main menu if no, loop if invalid input
+        char c;
+        cout << "Congratulations! Proceed to next level? (Y/N):  ";
+        cin >> c;
+        return;
+    }
 }
