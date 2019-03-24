@@ -2,6 +2,33 @@
 #include "map.h"
 #include "robot.h"
 
+
+void Map::setColsLines(int c,int l)
+{
+  n_cols = c;
+  n_lines = l;
+}
+
+void Map::addInitPos(int c,int l)
+{
+  pair<int,int> p = make_pair(c,l);
+  init_pos.push_back(p);
+}
+
+void Map::addFinalPos(int c,int l)
+{
+  pair<int,int> p = make_pair(c,l);
+  final_pos.push_back(p);
+  n_finalPos++;
+}
+
+void Map::clearPosVectors()
+{
+  init_pos.clear();
+  final_pos.clear();
+  n_finalPos = 0;
+}
+
 void Map::setLayout(vector<vector<char>> l)
 {
   layout = l;

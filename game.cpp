@@ -78,7 +78,7 @@ void Game::readDataFromFiles()
                 int cols, lines;
                 iss.str(input);
                 iss >> lines >> cols;
-                //falta povoar aqui o resto dos private members de map //TODO
+                m.setColsLines(cols,lines);
                 state = 1;
                 break;
             case 1:
@@ -107,6 +107,7 @@ void Game::readDataFromFiles()
                 {
                     state = 0;
                     maps.push_back(m);
+                    m.clearPosVectors();
                     break;
                 }
                 r.icon = input[0];
@@ -118,6 +119,8 @@ void Game::readDataFromFiles()
                 iss.clear();
                 iss.str(input);
                 iss >> r.line_c >> r.col_c >> r.final_line >> r.final_col;
+                m.addInitPos(r.col_c,r.line_c);
+                m.addFinalPos(r.final_col,r.final_line);
                 m.robots.push_back(r);
                 break;
         }
