@@ -13,8 +13,9 @@ Game::Game(int gamemode)
 {
 
     //Ler aqui dos ficheiros
-    //readDataFromFiles(); still fixing a small thing 
+    readDataFromFiles();
     
+    /*
     Map m;
     Robot r;
     
@@ -34,7 +35,7 @@ Game::Game(int gamemode)
     r.icon = 'a';
     m.robots.push_back(r);
 
-    maps.push_back(m);
+    maps.push_back(m);*/
 
     switch (gamemode)
     {
@@ -113,12 +114,15 @@ void Game::readDataFromFiles()
                 else 
                     r.is_helper = true;
                 input = input.substr(4); // get the init and final coordinates all together on one string
+                iss.clear();
                 iss.str(input);
                 iss >> r.line_c >> r.col_c >> r.final_line >> r.final_col;
                 m.robots.push_back(r);
                 break;
         }
     }
+
+    maps.push_back(m); // for the last map that does not finish when the next one starts, with NEWMAP
 
     f_input.close();
 }
@@ -136,7 +140,7 @@ void Game::soloMode()
 
     while (!isGameOver)
     {
-        
+
         maps.at(level).createLayoutWithRobots();
         maps.at(level).displayWithRobots(maps.at(level).layoutWithRobots);
         bool isInputValid = true;
