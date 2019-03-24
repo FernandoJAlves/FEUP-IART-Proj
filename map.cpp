@@ -2,6 +2,7 @@
 #include "map.h"
 #include "robot.h"
 
+typedef unsigned int u_int;
 
 void Map::setColsLines(int c,int l)
 {

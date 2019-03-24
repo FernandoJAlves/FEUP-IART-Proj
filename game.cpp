@@ -69,7 +69,7 @@ void Game::readDataFromFiles()
     string input;
     istringstream iss;
     getline(f_input,input); //To catch the first NEWMAP
-    ui state = 0;
+    u_int state = 0;
     while(getline(f_input,input))
     {
         switch(state)
@@ -90,7 +90,7 @@ void Game::readDataFromFiles()
                     break;
                 }
                 
-                for(ui i=0; i < input.size();i++)
+                for(u_int i=0; i < input.size();i++)
                 {
                     if(input[i] == 'X')
                         in_v.push_back('1');
