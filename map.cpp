@@ -118,3 +118,20 @@ void Map::moveRobot(int robot, int dir)
     break;
   }
 }
+
+bool Map::checkGameOver()
+{
+  bool gameover = true;
+  for (u_int i = 0; i < robots.size(); i++)
+  {
+    Robot r = robots.at(i);
+    if (!r.is_helper)
+    {
+      if (r.line_c != r.final_line)
+        gameover = false;
+      if (r.col_c != r.final_col)
+        gameover = false;
+    }
+  }
+  return gameover;
+}

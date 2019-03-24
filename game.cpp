@@ -32,6 +32,7 @@ Game::Game(int gamemode)
     r.final_line = 5;
     r.final_col = 5;
     r.icon = 'a';
+    r.is_helper = false;
     m.robots.push_back(r);
 
     maps.push_back(m);
@@ -174,6 +175,20 @@ void Game::soloMode()
         }
 
         currMap.moveRobot(index, dir);
+
+        if(currMap.checkGameOver()){
+
+            currMap.createLayoutWithRobots();           //updates layoutWithRobots
+            currMap.displayWithRobots(currMap.layoutWithRobots);
+            
+            //TODO - Increment level if yes, go back to main menu if no, loop if invalid input
+            char c;
+            cout << "Congratulations! Proceed to next level? (Y/N):  ";
+            cin >> c;
+            return;
+
+        }
+
     }
 }
 

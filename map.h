@@ -25,6 +25,7 @@ public:
   void createLayoutWithRobots();
   void displayWithRobots(vector<vector<char>> l);
   void moveRobot(int robot, int dir);
+  bool checkGameOver();
 };
 
 
