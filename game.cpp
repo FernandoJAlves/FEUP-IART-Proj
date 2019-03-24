@@ -139,7 +139,7 @@ void Game::soloMode()
         
         1- Mostrar tabuleiro atual;
         2- Check if jogo acabou; -> Se acabou não pede/calcula jogada e dá uma mensagem de vitoria
-        3- Pedir jogada (SP) // Calcular jogada (Quando pede ajuda);
+        3- Pedir jogada      // Calcular jogada (Quando pede ajuda);
         4- Mover Robot pedido;
     */
 
@@ -200,53 +200,6 @@ void Game::soloMode()
     }
 }
 
-int Game::interpretInputRobot(char robot)
-{
-    int aux = toupper(robot);
-    int index = aux - 65; //A maiuculo = 65, por isso index começa em 0
-    if (index >= 0 && index < 20)
-    { //aceita 0 a 19 robots
-        return index;
-    }
-    else
-    {
-        return -1;
-    }
-}
-
-int Game::interpretInputDir(char dir)
-{
-    switch (dir)
-    {
-    case 'w':
-    case 'W':
-        //up
-        return 0;
-    case 'd':
-    case 'D':
-        //right
-        return 1;
-    case 's':
-    case 'S':
-        //down
-        return 2;
-    case 'a':
-    case 'A':
-        //left
-        return 3;
-    case 'q':
-    case 'Q':
-        //leave
-        return 4;
-    case 'h':
-    case 'H':
-        //help
-        return 5;
-
-    default:
-        return -1;
-    }
-}
 
 void Game::botMode(int searchMethod)
 {
@@ -302,3 +255,54 @@ void Game::botMode(int searchMethod)
         return;
     }
 }
+
+
+
+int Game::interpretInputRobot(char robot)
+{
+    int aux = toupper(robot);
+    int index = aux - 65; //A maiuculo = 65, por isso index começa em 0
+    if (index >= 0 && index < 20)
+    { //aceita 0 a 19 robots
+        return index;
+    }
+    else
+    {
+        return -1;
+    }
+}
+
+int Game::interpretInputDir(char dir)
+{
+    switch (dir)
+    {
+    case 'w':
+    case 'W':
+        //up
+        return 0;
+    case 'd':
+    case 'D':
+        //right
+        return 1;
+    case 's':
+    case 'S':
+        //down
+        return 2;
+    case 'a':
+    case 'A':
+        //left
+        return 3;
+    case 'q':
+    case 'Q':
+        //leave
+        return 4;
+    case 'h':
+    case 'H':
+        //help
+        return 5;
+
+    default:
+        return -1;
+    }
+}
+
