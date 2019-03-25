@@ -8,24 +8,27 @@
 #include <vector>
 using namespace std;
 
-class Game
-{
-
+class Game {
  
-public:
-  Game(){};
-  Game(int gamemode, int searchMethod);
+    public:
+        typedef struct {
+            vector<Robot> robots;
+            int depth;
+        } Node;
 
-  bool isGameOver = false;
-  int level = 0;
+        Game(){};
+        Game(int gamemode, int searchMethod);
 
-  void readDataFromFiles();
+        bool isGameOver = false;
+        int level = 0;
 
-  void soloMode();
-  void botMode(int searchMethod);
+        void readDataFromFiles();
 
-  int interpretInputRobot(char robot); //devolve o Index do robot no array
-  int interpretInputDir(char dir); //devolve a dir a mover
+        void soloMode();
+        void botMode(int searchMethod);
+
+        int interpretInputRobot(char robot); //devolve o Index do robot no array
+        int interpretInputDir(char dir); //devolve a dir a mover
   
 
 };
