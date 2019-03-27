@@ -11,101 +11,139 @@
 
 using namespace std;
 
-
 // Template Print
-template<typename T> void print_queue(T q) {
-    while(!q.empty()) {
+template <typename T>
+void print_queue(T q)
+{
+    while (!q.empty())
+    {
         cout << q.top().depth << " ";
         q.pop();
     }
     cout << '\n';
 }
 
-
 // Selects the Algorithm and returns the Node
-Node switchAlgorithm(int n, Node start, Map currMap){
-    
-    /*
-        SEARCH METHODS:
-        1- DFS
-        2- BFS
-        3- Aprofundamento Progressivo
-        4- Custo Uniforme
-        5- Gulosa
-        6- A*
-        */
-
+Node switchAlgorithm(int n, Node start, Map currMap)
+{
     switch (n)
     {
-        case 1:
-            return alg_dfs(start, currMap);
-            break;
-    
-        default:
-            break;
+    case 1:
+        return alg_dfs(start, currMap);
+        break;
+    case 2:
+        return alg_bfs(start, currMap);
+        break;
+    case 3:
+        return alg_progDeep(start, currMap);
+        break;
+    case 4:
+        return alg_uniCost(start, currMap);
+        break;
+    case 5:
+        return alg_greedy(start, currMap);
+        break;
+    case 6:
+        return alg_Astar(start, currMap);
+        break;
+
+    default:
+        break;
     }
     return start;
 }
 
-
-Node alg_dfs(Node startN, Map currMap){
+Node alg_dfs(Node startN, Map currMap)
+{
     Node ret;
 
     // Using lambda to compare elements.
-    auto cmp = [](Node left, Node right) { 
+    auto cmp = [](Node left, Node right) {
         return (left.depth) < (right.depth);
-        };
+    };
 
     priority_queue<Node, vector<Node>, decltype(cmp)> p_queue(cmp);
 
     p_queue.push(startN);
 
-/* WIP
-    while(true){
-        for(int i = 0; i < 4; i++){
+    while (p_queue.size() > 0)
+    {
+        Node first = p_queue.top();
+        p_queue.pop();
 
+        //Para evitar percorrer infinitamente
+        if (first.depth > MAX_DEPTH)
+            continue;
+
+        //itera pelos robots
+        for (u_int r = 0; r < currMap.robots.size(); r++)
+        {
+            //itera pelas direções
+            for (u_int d = 0; d < 4; d++)
+            {
+                currMap.robots = first.robots;
+                currMap.createLayoutWithRobots();
+                //Only expand useful moves
+                if (currMap.moveRobot(r, d) != -1)
+                {
+                    Node toInsert;
+                    toInsert.robots = currMap.robots;
+                    toInsert.depth = first.depth + 1;
+                    toInsert.moveSeq = first.moveSeq;
+                    toInsert.moveSeq.push_back(make_pair(r, d));
+
+                    //Check if gameover
+                    if (currMap.checkGameOver())
+                    {
+                        cout << "DFS Finished Calculation Successfully!\n";
+                        return toInsert;
+                    }
+
+                    //Push to queue
+                    else
+                        p_queue.push(toInsert);
+                }
+            }
         }
-
-
     }
-    */
 
+    cout << "DFS - True End, Needs Different Message\n";
 
-    print_queue(p_queue);
+    //print_queue(p_queue);
 
     return ret;
 }
 
-
-Node alg_bfs(Node startN, Map currMap){
+Node alg_bfs(Node startN, Map currMap)
+{
     Node ret;
 
     return ret;
 }
 
-
-Node alg_Astar(Node startN, Map currMap){
+Node alg_Astar(Node startN, Map currMap)
+{
     Node ret;
 
     return ret;
 }
 
-
-Node alg_greedy(Node startN, Map currMap){
+Node alg_greedy(Node startN, Map currMap)
+{
     Node ret;
 
     return ret;
 }
 
-
-Node alg_progDeep(Node startN, Map currMap){
+Node alg_progDeep(Node startN, Map currMap)
+{
     Node ret;
 
     return ret;
 }
 
-
-Node alg_uniCost(Node startN, Map currMap){
+Node alg_uniCost(Node startN, Map currMap)
+{
     Node ret;
 
     return ret;

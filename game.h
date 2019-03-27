@@ -11,7 +11,7 @@ using namespace std;
 typedef struct
 {
     vector<Robot> robots;
-    int depth;
+    int depth = 0;
     vector<pair<int, int>> moveSeq = {};
 } Node;
 

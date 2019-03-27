@@ -7,12 +7,6 @@
 int main()
 {
 
-/*
-    Node start;
-    start.depth = 7;
-    alg_dfs(start);
-   */ 
-
     while(true)
         mainMenu();
     

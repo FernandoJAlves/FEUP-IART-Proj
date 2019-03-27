@@ -220,9 +220,18 @@ void Game::botMode(int searchMethod)
     while (!isGameOver)
     {
 
-        vector<pair<int, int>> moveSeq = {{0, 2}, {0, 1}, {0, 0}, {0, 1}, {0, 2}}; //calculada usando o method especificado
-
+        cout << "Start Cicle\n";
         Map &currMap = maps.at(level); //reference to the current map
+
+        Node startN;
+        startN.robots = currMap.robots;
+        
+        Node ret = switchAlgorithm(searchMethod, startN, currMap);
+        
+        vector<pair<int, int>> moveSeq = ret.moveSeq;
+        
+        cout << "Before 2nd Cicle\n";
+
         u_int moveIndex = 0;
 
         while (moveIndex < moveSeq.size())
