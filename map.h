@@ -30,7 +30,7 @@ public:
   void printCell(char c);
   void createLayoutWithRobots();
   void displayWithRobots(vector<vector<char>> l);
-  void moveRobot(int robot, int dir);
+  int moveRobot(int robot, int dir);
   bool checkGameOver();
 };
 

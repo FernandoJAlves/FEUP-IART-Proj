@@ -88,7 +88,8 @@ void Map::displayWithRobots(vector<vector<char>> v)
   }
 }
 
-void Map::moveRobot(int robot, int dir)
+//Returns -1 if the move was "useless"
+int Map::moveRobot(int robot, int dir)
 {
 
   Robot r = robots.at(robot);
@@ -100,6 +101,10 @@ void Map::moveRobot(int robot, int dir)
   case 0:
   {
     //up
+    //return -1 if its a useless move
+    char test = layoutWithRobots[r.line_c-1][r.col_c];
+    if((test >= 'a' && test <= 'z') || test == '1')
+      return -1;
     do
     {
       i--;
@@ -111,6 +116,10 @@ void Map::moveRobot(int robot, int dir)
   case 1:
   {
     //right
+    //return -1 if its a useless move
+    char test = layoutWithRobots[r.line_c][r.col_c+1];
+    if((test >= 'a' && test <= 'z') || test == '1')
+      return -1;
     do
     {
       i++;
@@ -122,6 +131,10 @@ void Map::moveRobot(int robot, int dir)
   case 2:
   {
     //down
+    //return -1 if its a useless move
+    char test = layoutWithRobots[r.line_c+1][r.col_c];
+    if((test >= 'a' && test <= 'z') || test == '1')
+      return -1;
     do
     {
       i++;
@@ -132,7 +145,11 @@ void Map::moveRobot(int robot, int dir)
   }
   case 3:
   {
-    //right
+    //left
+    //return -1 if its a useless move
+    char test = layoutWithRobots[r.line_c][r.col_c-1];
+    if((test >= 'a' && test <= 'z') || test == '1')
+      return -1;
     do
     {
       i--;
@@ -145,6 +162,7 @@ void Map::moveRobot(int robot, int dir)
     cout << "Error moving robot\n";
     break;
   }
+  return 0;
 }
 
 bool Map::checkGameOver()

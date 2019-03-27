@@ -8,30 +8,39 @@
 #include <vector>
 using namespace std;
 
-class Game {
- 
-    public:
-        typedef struct {
-            vector<Robot> robots;
-            int depth;
-        } Node;
+typedef struct
+{
+    vector<Robot> robots;
+    int depth;
+    vector<pair<int, int>> moveSeq = {};
+} Node;
 
-        Game(){};
-        Game(int gamemode, int searchMethod);
+class Game
+{
 
-        bool isGameOver = false;
-        int level = 0;
+  public:
+    Game(){};
+    Game(int gamemode, int searchMethod);
 
-        void readDataFromFiles();
+    bool isGameOver = false;
+    int level = 0;
 
-        void soloMode();
-        void botMode(int searchMethod);
+    void readDataFromFiles();
 
-        int interpretInputRobot(char robot); //devolve o Index do robot no array
-        int interpretInputDir(char dir); //devolve a dir a mover
-  
+    void soloMode();
+    void botMode(int searchMethod);
 
+    int interpretInputRobot(char robot); //devolve o Index do robot no array
+    int interpretInputDir(char dir);     //devolve a dir a mover
 };
+
+Node switchAlgorithm(int n, Node start, Map currMap);
+Node alg_dfs(Node startN, Map currMap);
+Node alg_bfs(Node startN, Map currMap);
+Node alg_Astar(Node startN, Map currMap);
+Node alg_greedy(Node startN, Map currMap);
+Node alg_progDeep(Node startN, Map currMap);
+Node alg_uniCost(Node startN, Map currMap);
 
 
 #endif

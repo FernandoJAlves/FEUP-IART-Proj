@@ -198,6 +198,7 @@ void Game::soloMode()
         }
 
         currMap.moveRobot(index, dir);
+        //cout << "\n\n" << temp << "\n\n";
     }
 }
 
@@ -215,16 +216,6 @@ void Game::botMode(int searchMethod)
             3- mostrar estado atual (sleep(1))
 
     */
-
-    /*
-        SEARCH METHODS:
-        1- DFS
-        2- BFS
-        3- Aprofundamento Progressivo
-        4- Custo Uniforme
-        5- Gulosa
-        6- A*
-   */
 
     while (!isGameOver)
     {
