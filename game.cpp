@@ -146,7 +146,21 @@ void Game::soloMode()
     while (!isGameOver)
     {
 
-        Map &currMap = maps.at(level);    //reference to the current map
+        Map &currMap = maps.at(level); //reference to the current map
+
+        if (currMap.checkGameOver())
+        {
+
+            currMap.createLayoutWithRobots(); //updates layoutWithRobots
+            currMap.displayWithRobots(currMap.layoutWithRobots);
+
+            //TODO - Increment level if yes, go back to main menu if no, loop if invalid input
+            char c;
+            cout << "Congratulations! Proceed to next level? (Y/N):  ";
+            cin >> c;
+            return;
+        }
+
         currMap.createLayoutWithRobots(); //updates layoutWithRobots
         currMap.displayWithRobots(currMap.layoutWithRobots);
         bool isInputValid = true; //to check if an input is valid
@@ -184,22 +198,8 @@ void Game::soloMode()
         }
 
         currMap.moveRobot(index, dir);
-
-        if (currMap.checkGameOver())
-        {
-
-            currMap.createLayoutWithRobots(); //updates layoutWithRobots
-            currMap.displayWithRobots(currMap.layoutWithRobots);
-
-            //TODO - Increment level if yes, go back to main menu if no, loop if invalid input
-            char c;
-            cout << "Congratulations! Proceed to next level? (Y/N):  ";
-            cin >> c;
-            return;
-        }
     }
 }
-
 
 void Game::botMode(int searchMethod)
 {
@@ -256,8 +256,6 @@ void Game::botMode(int searchMethod)
     }
 }
 
-
-
 int Game::interpretInputRobot(char robot)
 {
     int aux = toupper(robot);
@@ -305,4 +303,3 @@ int Game::interpretInputDir(char dir)
         return -1;
     }
 }
-
