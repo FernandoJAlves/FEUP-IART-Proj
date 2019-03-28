@@ -10,6 +10,8 @@
 
 using namespace std;
 
+typedef unsigned int u_int;
+
 #define MAX_DEPTH 25
 
 #endif

@@ -2,7 +2,6 @@
 #include "map.h"
 #include "robot.h"
 
-typedef unsigned int u_int;
 
 void Map::setColsLines(int c,int l)
 {
@@ -28,6 +27,7 @@ void Map::clearPosVectors()
   init_pos.clear();
   final_pos.clear();
   n_finalPos = 0;
+  robots.clear();
 }
 
 void Map::setLayout(vector<vector<char>> l)
