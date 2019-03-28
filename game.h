@@ -12,6 +12,8 @@ typedef struct
 {
     vector<Robot> robots;
     int depth = 0;
+    int heuristic = 0;
+    int expansions = 0;
     vector<pair<int, int>> moveSeq = {};
 } Node;
 

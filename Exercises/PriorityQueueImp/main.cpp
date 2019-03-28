@@ -21,7 +21,7 @@ template<typename T> void print_queue(T q) {
  
 int main() {
  
- /*
+ 
     // Using lambda to compare elements.
     auto cmp = [](int left, int right) { 
         return (left) < (right);
@@ -29,9 +29,11 @@ int main() {
 
     std::priority_queue<int, std::vector<int>, decltype(cmp)> q3(cmp);
  
-    for(int n : {0,1,2,3,4,5,6,7,8,9})
+    for(int n : {0,-5,2,3,-2,5,6,7,8,9})
         q3.push(n);
 
+    print_queue(q3);
+/*
     std::priority_queue<int> q1;
  
     for(int n : {0,1,2,3,4,5,6,7,8,9})
@@ -43,6 +45,7 @@ int main() {
     print_queue(q1);
     */
 
+/*
   set<vector<pair<int,int>>> conjunto;
   vector<pair<int,int>> v0 = {{1,2},{3,4},{5,6}};
   cout << v0[0].first << endl;
@@ -63,5 +66,6 @@ int main() {
     const vector<pair<int,int>>& i = (*it); // HERE we get the vector
     cout << i[0].first << endl;  // NOW we output the first item.
   }
+  */
  
 }

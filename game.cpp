@@ -17,28 +17,7 @@ Game::Game(int gamemode, int searchMethod)
     //Ler aqui dos ficheiros
     readDataFromFiles();
 
-    /*
-    Map m;
-    Robot r;
-    
-    vector<vector<char>> v = {{'1', '1', '1', '1', '1', '1', '1'},
-                              {'1', '0', '1', '0', '0', '0', '1'},
-                              {'1', '0', '1', '0', '1', '0', '1'},
-                              {'1', '0', '1', '0', '1', '0', '1'},
-                              {'1', '0', '1', '0', '1', '0', '1'},
-                              {'1', '0', '0', '0', '1', 'A', '1'},
-                              {'1', '1', '1', '1', '1', '1', '1'}};
-
-    m.setLayout(v);
-    r.line_c = 1;
-    r.col_c = 1;
-    r.final_line = 5;
-    r.final_col = 5;
-    r.icon = 'a';
-    r.is_helper = false;
-    m.robots.push_back(r);
-
-    maps.push_back(m);*/
+    //TODO: Deixar o user escolher o lvl onde vai começar (0,1,2,...)
 
     switch (gamemode)
     {
@@ -177,6 +156,8 @@ void Game::soloMode()
 
             //O user quer continuar a jogar
             level++;
+            if(level >= (int)maps.size())
+                isGameOver = true;
             continue;
         }
 
@@ -217,6 +198,9 @@ void Game::soloMode()
 
         currMap.moveRobot(index, dir);
     }
+
+    cout << "\nYou finished all the levels!\n\n";
+
 }
 
 void Game::botMode(int searchMethod)
@@ -260,6 +244,8 @@ void Game::botMode(int searchMethod)
         else
         {
             cout << "\nAlgorithm Finished Calculation Successfully!\n";
+            cout << "Solution Found has " << ret.depth << " steps\n";
+            cout << "Expanded " << ret.expansions << " nodes\n";
             cout << "Elapsed time: " << elapsed.count() << " s\n\n";
         }
 
