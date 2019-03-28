@@ -10,6 +10,6 @@
 
 using namespace std;
 
-#define MAX_DEPTH 6 //TODO - Change this
+#define MAX_DEPTH 25
 
 #endif

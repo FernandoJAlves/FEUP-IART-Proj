@@ -7,6 +7,7 @@
 #include <vector>
 #include <cctype>
 #include <unistd.h>
+#include <chrono> // for high_resolution_clock
 
 using namespace std;
 
@@ -154,11 +155,29 @@ void Game::soloMode()
             currMap.createLayoutWithRobots(); //updates layoutWithRobots
             currMap.displayWithRobots(currMap.layoutWithRobots);
 
-            //TODO - Increment level if yes, go back to main menu if no, loop if invalid input
-            char c;
             cout << "Congratulations! Proceed to next level? (Y/N):  ";
-            cin >> c;
-            return;
+            //cout << "Map 1: " << maps.at(0).robots.size() << '\n';
+            //cout << "Map 2: " << maps.at(1).robots.size() << '\n';
+            char c;
+            bool isCValid = false;
+            do
+            {
+                cin >> c;
+                if (c == 'N' || c == 'n')
+                {
+                    isCValid = true;
+                    return;
+                }
+                else if (c == 'Y' || c == 'y')
+                {
+                    isCValid = true;
+                }
+
+            } while (!isCValid);
+
+            //O user quer continuar a jogar
+            level++;
+            continue;
         }
 
         currMap.createLayoutWithRobots(); //updates layoutWithRobots
@@ -190,7 +209,6 @@ void Game::soloMode()
 
         } while (!isInputValid);
 
-        //cout << "Robot: " << index << "\nDir: " << dir << '\n';
         if (dir == 4)
         {
             isGameOver = true;
@@ -198,7 +216,6 @@ void Game::soloMode()
         }
 
         currMap.moveRobot(index, dir);
-        //cout << "\n\n" << temp << "\n\n";
     }
 }
 
@@ -220,17 +237,33 @@ void Game::botMode(int searchMethod)
     while (!isGameOver)
     {
 
-        cout << "Start Cicle\n";
         Map &currMap = maps.at(level); //reference to the current map
 
         Node startN;
         startN.robots = currMap.robots;
-        
+
+        // Record start time
+        auto start = chrono::high_resolution_clock::now();
+
         Node ret = switchAlgorithm(searchMethod, startN, currMap);
-        
+
+        // Record end time
+        auto finish = chrono::high_resolution_clock::now();
+        chrono::duration<double> elapsed = finish - start;
+
+        if (ret.depth == -1) //Algorithm did not find an answer
+        { 
+            cout << "\nAlgorithm Could Not Find an Answer...\n";
+            cout << "Elapsed time: " << elapsed.count() << " s\n\n";
+            return;
+        }
+        else
+        {
+            cout << "\nAlgorithm Finished Calculation Successfully!\n";
+            cout << "Elapsed time: " << elapsed.count() << " s\n\n";
+        }
+
         vector<pair<int, int>> moveSeq = ret.moveSeq;
-        
-        cout << "Before 2nd Cicle\n";
 
         u_int moveIndex = 0;
 

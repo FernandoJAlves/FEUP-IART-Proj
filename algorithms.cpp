@@ -100,7 +100,6 @@ Node alg_dfs(Node startN, Map currMap)
                     //Check if gameover
                     if (currMap.checkGameOver())
                     {
-                        cout << "DFS Finished Calculation Successfully!\n";
                         return toInsert;
                     }
 
@@ -118,9 +117,9 @@ Node alg_dfs(Node startN, Map currMap)
         }
     }
 
-    cout << "DFS - True End, Needs Different Message\n";
+    //Se chegar aqui, quer dizer que ficou sem nós por expandir, logo não há solução
 
-    //print_queue(p_queue);
+    ret.depth = -1; // Depth = -1 quer dizer que não encontrou solução
 
     return ret;
 }
