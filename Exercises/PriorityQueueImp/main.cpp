@@ -7,7 +7,10 @@
 #include <utility> 
 #include <iostream>
 #include <unistd.h>
+#include <set>
  
+using namespace std;
+
 template<typename T> void print_queue(T q) {
     while(!q.empty()) {
         std::cout << q.top() << " ";
@@ -40,18 +43,25 @@ int main() {
     print_queue(q1);
     */
 
-   std::vector<std::pair<int, int>> v1 = {{1,2},{3,4},{5,6}};
+  set<vector<pair<int,int>>> conjunto;
+  vector<pair<int,int>> v0 = {{1,2},{3,4},{5,6}};
+  cout << v0[0].first << endl;
+  conjunto.insert(v0);
 
-   std::vector<std::pair<int, int>> v2 = v1;
+  v0 = {{10,20},{30,40},{50,60}};
+  cout << v0[0].first << endl;
+  conjunto.insert(v0);
 
-   std::cout << v1.size() << "\n\n" << v2.size() << '\n';
+  v0 = {{1,2},{3,4},{5,6}};
+  cout << v0[0].first << endl;
+  conjunto.insert(v0);
 
-   for(unsigned int i = 0; i < v1.size(); i++){
-       std::cout << v1[i].first << "   " << v1[i].second << '\n';
-   }
-   std::cout << '\n';
-    for(unsigned int i = 0; i < v2.size(); i++){
-       std::cout << v2[i].first << "   " << v2[i].second << '\n';
-   }
+
+  set<vector<pair<int,int>>>::iterator it;
+  cout << "\nsize = " << conjunto.size() << "\n\n";
+  for( it = conjunto.begin(); it != conjunto.end(); it++) {
+    const vector<pair<int,int>>& i = (*it); // HERE we get the vector
+    cout << i[0].first << endl;  // NOW we output the first item.
+  }
  
 }

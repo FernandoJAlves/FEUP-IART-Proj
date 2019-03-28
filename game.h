@@ -41,6 +41,7 @@ Node alg_Astar(Node startN, Map currMap);
 Node alg_greedy(Node startN, Map currMap);
 Node alg_progDeep(Node startN, Map currMap);
 Node alg_uniCost(Node startN, Map currMap);
+vector<pair<int,int>> robotToPositions(vector<Robot> r);
 
 
 #endif

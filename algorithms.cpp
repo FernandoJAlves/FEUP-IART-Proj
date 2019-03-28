@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <functional>
 #include <queue>
+#include <set>
 
 using namespace std;
 
@@ -57,6 +58,9 @@ Node alg_dfs(Node startN, Map currMap)
 {
     Node ret;
 
+    set<vector<pair<int, int>>> prevStates;
+    pair<set<vector<pair<int, int>>>::iterator, bool> insertRet;
+
     // Using lambda to compare elements.
     auto cmp = [](Node left, Node right) {
         return (left.depth) < (right.depth);
@@ -65,6 +69,7 @@ Node alg_dfs(Node startN, Map currMap)
     priority_queue<Node, vector<Node>, decltype(cmp)> p_queue(cmp);
 
     p_queue.push(startN);
+    prevStates.insert(robotToPositions(startN.robots));
 
     while (p_queue.size() > 0)
     {
@@ -101,7 +106,13 @@ Node alg_dfs(Node startN, Map currMap)
 
                     //Push to queue
                     else
-                        p_queue.push(toInsert);
+                    {
+                        insertRet = prevStates.insert(robotToPositions(toInsert.robots));
+                        if (!insertRet.second)  //Não foi inserido
+                            continue; 
+                        else
+                            p_queue.push(toInsert);
+                    }
                 }
             }
         }
@@ -146,5 +157,13 @@ Node alg_uniCost(Node startN, Map currMap)
 {
     Node ret;
 
+    return ret;
+}
+
+vector<pair<int,int>> robotToPositions(vector<Robot> r){
+    vector<pair<int,int>> ret;
+    for(u_int i = 0; i < r.size(); i++){
+        ret.push_back(make_pair(r.at(i).line_c,r.at(i).col_c));
+    }
     return ret;
 }
