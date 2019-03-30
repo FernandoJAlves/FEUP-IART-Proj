@@ -10,6 +10,7 @@
 #include <queue>
 #include <set>
 #include <map>
+#include "limits.h"
 
 using namespace std;
 
@@ -215,27 +216,33 @@ Node alg_Astar(Node startN, Map currMap)
 {
     Node ret;
 
-    set<vector<pair<int, int>>> prevStates;
-    pair<set<vector<pair<int, int>>>::iterator, bool> insertRet;
+    //TODO: Geral, testar se o primeiro nó é solução
 
     // Using lambda to compare elements.
     auto cmp = [](Node left, Node right) {
-        return (left.heuristic) < (right.heuristic);
+        return (left.heuristic + left.depth) < (right.heuristic + right.depth);
     };
 
     priority_queue<Node, vector<Node>, decltype(cmp)> p_queue(cmp);
 
+    startN.heuristic = calcHeuristic(0, startN.robots, currMap); //TODO: Do heuristic selector
     p_queue.push(startN);
-    prevStates.insert(robotToPositions(startN.robots));
+
+    int n_expansions = 0;
+    int minDepth = INT_MAX;
 
     while (p_queue.size() > 0)
     {
         Node first = p_queue.top();
         p_queue.pop();
 
-        //Para evitar percorrer infinitamente
+        //Para evitar percorrer infinitamente //TODO: Tirar e testar se continua a dar
         if (first.depth > MAX_DEPTH)
             continue;
+
+        if(first.depth+first.heuristic > minDepth){ //Encontrou a melhor solução
+            return ret;
+        }
 
         //itera pelos robots
         for (u_int r = 0; r < currMap.robots.size(); r++)
@@ -248,26 +255,28 @@ Node alg_Astar(Node startN, Map currMap)
                 //Only expand useful moves
                 if (currMap.moveRobot(r, d) != -1)
                 {
+                    n_expansions++;
                     Node toInsert;
                     toInsert.robots = currMap.robots;
                     toInsert.depth = first.depth + 1;
+                    toInsert.heuristic = calcHeuristic(0, startN.robots, currMap);
                     toInsert.moveSeq = first.moveSeq;
                     toInsert.moveSeq.push_back(make_pair(r, d));
 
                     //Check if gameover
                     if (currMap.checkGameOver())
                     {
-                        return toInsert;
+                        if (toInsert.depth < minDepth)
+                        { //Nova melhor solução
+                            minDepth = toInsert.depth;
+                            ret = toInsert;
+                        }
                     }
 
                     //Push to queue
                     else
                     {
-                        insertRet = prevStates.insert(robotToPositions(toInsert.robots));
-                        if (!insertRet.second) //Não foi inserido
-                            continue;
-                        else
-                            p_queue.push(toInsert);
+                        p_queue.push(toInsert);
                     }
                 }
             }
@@ -318,7 +327,17 @@ vector<pair<int, int>> robotToPositions(vector<Robot> r)
     return ret;
 }
 
-int calcHeuristic(vector<Robot> r)
+int calcHeuristic(int option, vector<Robot> r, Map &currMap)
 {
+    switch (option)
+    {
+    case 0:
+        return 0;
+        break;
+
+    default:
+        break;
+    }
+
     return 0;
 }
