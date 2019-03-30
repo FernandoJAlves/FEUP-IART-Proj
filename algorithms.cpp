@@ -396,8 +396,8 @@ int heurAreaDens(vector<Robot> &r, Map &currMap)
     {
         if (!r.at(i).is_helper)
         {
-            Robot
-            int area = 0 //WIP
+            //Robot
+            //int area = 0; //WIP
         }
     }
     return ret;
