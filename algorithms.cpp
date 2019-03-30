@@ -218,15 +218,19 @@ Node alg_Astar(Node startN, Map currMap)
 
     //TODO: Geral, testar se o primeiro nó é solução
 
+    map<vector<pair<int, int>>, int> prevStates;
+    pair<map<vector<pair<int, int>>, int>::iterator, bool> insertRet;
+
     // Using lambda to compare elements.
     auto cmp = [](Node left, Node right) {
-        return (left.heuristic + left.depth) < (right.heuristic + right.depth);
+        return (left.heuristic + left.depth) > (right.heuristic + right.depth);
     };
 
     priority_queue<Node, vector<Node>, decltype(cmp)> p_queue(cmp);
 
     startN.heuristic = calcHeuristic(0, startN.robots, currMap); //TODO: Do heuristic selector
     p_queue.push(startN);
+    prevStates.insert(pair<vector<pair<int, int>>, int>(robotToPositions(startN.robots), startN.depth));
 
     int n_expansions = 0;
     int minDepth = INT_MAX;
@@ -240,7 +244,10 @@ Node alg_Astar(Node startN, Map currMap)
         if (first.depth > MAX_DEPTH)
             continue;
 
-        if(first.depth+first.heuristic > minDepth){ //Encontrou a melhor solução
+        if (first.depth + first.heuristic > minDepth)
+        { //Encontrou a melhor solução
+            cout << "Ret Depth" << first.depth << '\n';
+            ret.expansions = n_expansions;
             return ret;
         }
 
@@ -255,6 +262,7 @@ Node alg_Astar(Node startN, Map currMap)
                 //Only expand useful moves
                 if (currMap.moveRobot(r, d) != -1)
                 {
+                    //sleep(1);
                     n_expansions++;
                     Node toInsert;
                     toInsert.robots = currMap.robots;
@@ -266,8 +274,9 @@ Node alg_Astar(Node startN, Map currMap)
                     //Check if gameover
                     if (currMap.checkGameOver())
                     {
-                        if (toInsert.depth < minDepth)
-                        { //Nova melhor solução
+                        cout << "Solution found!\n";
+                        if (toInsert.depth < minDepth) //Nova melhor solução
+                        { 
                             minDepth = toInsert.depth;
                             ret = toInsert;
                         }
@@ -276,7 +285,21 @@ Node alg_Astar(Node startN, Map currMap)
                     //Push to queue
                     else
                     {
-                        p_queue.push(toInsert);
+                        insertRet = prevStates.insert(pair<vector<pair<int, int>>, int>(robotToPositions(toInsert.robots), toInsert.depth));
+                        if (!insertRet.second) //Já foi percorrido
+                        {
+                            if (toInsert.depth < insertRet.first->second) //Chegou com profundidade menor portanto vai para a p_queue
+                            {
+                                insertRet.first->second = toInsert.depth;
+                                p_queue.push(toInsert);
+                            }
+                            else // Ignorar node porque já passou lá com profundidade menor
+                            {
+                                continue;
+                            }
+                        }
+                        else //Ainda não foi percorrido
+                            p_queue.push(toInsert);
                     }
                 }
             }
