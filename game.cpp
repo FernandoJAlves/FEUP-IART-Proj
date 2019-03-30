@@ -267,11 +267,25 @@ void Game::botMode(int searchMethod)
         currMap.createLayoutWithRobots(); //updates layoutWithRobots
         currMap.displayWithRobots(currMap.layoutWithRobots);
 
-        //TODO - Increment level if yes, go back to main menu if no, loop if invalid input
         char c;
         cout << "Congratulations! Proceed to next level? (Y/N):  ";
-        cin >> c;
-        return;
+
+        bool isCValid = false;
+        do{
+            cin >> c;
+            if (c == 'N' || c == 'n')
+                return;
+
+            else if (c == 'Y' || c == 'y')
+                isCValid = true;
+
+        } while (!isCValid);
+
+        //O user quer continuar a jogar
+        level++;
+        if(level >= (int)maps.size())
+            isGameOver = true;
+        continue;
     }
 }
 
