@@ -11,10 +11,11 @@
 
 using namespace std;
 
-Game::Game(int gamemode, int searchMethod)
+Game::Game(int gamemode, int searchMethod, int level)
 {
 
     //Ler aqui dos ficheiros
+    this->level=level;
     readDataFromFiles();
 
     //TODO: Deixar o user escolher o lvl onde vai começar (0,1,2,...)
@@ -144,7 +145,6 @@ void Game::soloMode()
                 cin >> c;
                 if (c == 'N' || c == 'n')
                 {
-                    isCValid = true;
                     return;
                 }
                 else if (c == 'Y' || c == 'y')
