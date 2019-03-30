@@ -42,7 +42,14 @@ Node switchAlgorithm(int n, Node start, Map currMap)
     case 5:
         return alg_greedy(start, currMap);
     case 6:
-        return alg_Astar(start, currMap);
+    {
+        int h = heuristicMenu();
+        if (h != -1)
+            return alg_Astar(start, currMap, h);
+        else
+            return start;
+        break;
+    }
 
     default:
         return start;
@@ -212,7 +219,7 @@ Node alg_bfs(Node startN, Map currMap)
     return ret;
 }
 
-Node alg_Astar(Node startN, Map currMap)
+Node alg_Astar(Node startN, Map currMap, int heur)
 {
     Node ret;
 
@@ -228,7 +235,7 @@ Node alg_Astar(Node startN, Map currMap)
 
     priority_queue<Node, vector<Node>, decltype(cmp)> p_queue(cmp);
 
-    startN.heuristic = calcHeuristic(0, startN.robots, currMap); //TODO: Do heuristic selector
+    startN.heuristic = calcHeuristic(heur, startN.robots, currMap); //TODO: Do heuristic selector
     p_queue.push(startN);
     prevStates.insert(pair<vector<pair<int, int>>, int>(robotToPositions(startN.robots), startN.depth));
 
@@ -246,7 +253,6 @@ Node alg_Astar(Node startN, Map currMap)
 
         if (first.depth + first.heuristic > minDepth)
         { //Encontrou a melhor solução
-            cout << "Ret Depth" << first.depth << '\n';
             ret.expansions = n_expansions;
             return ret;
         }
@@ -267,16 +273,15 @@ Node alg_Astar(Node startN, Map currMap)
                     Node toInsert;
                     toInsert.robots = currMap.robots;
                     toInsert.depth = first.depth + 1;
-                    toInsert.heuristic = calcHeuristic(0, startN.robots, currMap);
+                    toInsert.heuristic = calcHeuristic(heur, startN.robots, currMap);
                     toInsert.moveSeq = first.moveSeq;
                     toInsert.moveSeq.push_back(make_pair(r, d));
 
                     //Check if gameover
                     if (currMap.checkGameOver())
                     {
-                        cout << "Solution found!\n";
                         if (toInsert.depth < minDepth) //Nova melhor solução
-                        { 
+                        {
                             minDepth = toInsert.depth;
                             ret = toInsert;
                         }
@@ -350,17 +355,33 @@ vector<pair<int, int>> robotToPositions(vector<Robot> r)
     return ret;
 }
 
-int calcHeuristic(int option, vector<Robot> r, Map &currMap)
+// HEURISTICS
+
+int calcHeuristic(int option, vector<Robot> &r, Map &currMap)
 {
     switch (option)
     {
-    case 0:
+    case 1: //default h() = 0
         return 0;
-        break;
+    case 2: // lines/cols alligned
+        return heurLineCol(r, currMap);
 
     default:
         break;
     }
 
     return 0;
+}
+
+int heurLineCol(vector<Robot> &r, Map &currMap)
+{
+    int ret = 0;
+    for (u_int i = 0; i < r.size(); i++)
+    {
+        if (r.at(i).line_c != r.at(i).final_line)
+            ret++;
+        if (r.at(i).col_c != r.at(i).final_col)
+            ret++;
+    }
+    return ret;
 }

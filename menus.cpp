@@ -116,3 +116,32 @@ int botModeMenu()
 
     return 0;
 }
+
+int heuristicMenu(){
+
+    //TODO: Fazer o input mais resistente (string e chars, não estourar)
+    int input;
+    cout << "Select the Heuristic: \n";
+    cout << "1 - Default Heuristic\n";
+    cout << "2 - Lines/Columns Alligned\n";
+    cout << "3 - Area density\n";
+    cout << "Option: ";
+    cin >> input;
+
+    switch (input)
+    {
+        case 1:
+            return 1;
+        case 2:
+            return 2;
+        case 3:
+            return 3;
+
+        default:
+            cout << "Invalid mode input!\n";
+            return -1;
+    }
+
+    return 0;
+}
+
