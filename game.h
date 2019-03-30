@@ -22,7 +22,7 @@ class Game
 
   public:
     Game(){};
-    Game(int gamemode, int searchMethod);
+    Game(int gamemode, int searchMethod, int level);
 
     bool isGameOver = false;
     int level = 0;
@@ -34,6 +34,7 @@ class Game
 
     int interpretInputRobot(char robot); //devolve o Index do robot no array
     int interpretInputDir(char dir);     //devolve a dir a mover
+    void setLevel(int level);
 };
 
 Node switchAlgorithm(int n, Node start, Map currMap);
@@ -45,6 +46,7 @@ Node alg_progDeep(Node startN, Map currMap);
 Node alg_uniCost(Node startN, Map currMap);
 vector<pair<int,int>> robotToPositions(vector<Robot> r);
 int calcHeuristic(int option, vector<Robot> r, Map &currMap);
+
 
 
 #endif
