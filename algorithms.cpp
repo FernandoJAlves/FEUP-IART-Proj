@@ -378,10 +378,27 @@ int heurLineCol(vector<Robot> &r, Map &currMap)
     int ret = 0;
     for (u_int i = 0; i < r.size(); i++)
     {
-        if (r.at(i).line_c != r.at(i).final_line)
-            ret++;
-        if (r.at(i).col_c != r.at(i).final_col)
-            ret++;
+        if (!r.at(i).is_helper)
+        {
+            if (r.at(i).line_c != r.at(i).final_line)
+                ret++;
+            if (r.at(i).col_c != r.at(i).final_col)
+                ret++;
+        }
+    }
+    return ret;
+}
+
+int heurAreaDens(vector<Robot> &r, Map &currMap)
+{
+    int ret = 0;
+    for (u_int i = 0; i < r.size(); i++)
+    {
+        if (!r.at(i).is_helper)
+        {
+            Robot
+            int area = 0 //WIP
+        }
     }
     return ret;
 }
