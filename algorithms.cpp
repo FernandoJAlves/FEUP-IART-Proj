@@ -330,7 +330,7 @@ Node alg_greedy(Node startN, Map currMap)
 Node alg_progDeep(Node startN, Map currMap)
 {
     Node ret;
-    int tempMaxDepth=1;
+    int tempMaxDepth=0;
 
     map<vector<pair<int, int>>, int> prevStates;
     pair<map<vector<pair<int, int>>, int>::iterator, bool> insertRet;
@@ -350,18 +350,30 @@ Node alg_progDeep(Node startN, Map currMap)
 
     while (p_queue.size() > 0)
     {
+
         Node first = p_queue.top();
-        p_queue.pop();
+
+
+        if (first.depth > tempMaxDepth){
+
+            tempMaxDepth++;
+
+            prevStates = map<vector<pair<int, int>>, int>();
+
+            while(!p_queue.empty()){
+                p_queue.pop();
+            }
+            p_queue.push(startN);
+             first = p_queue.top();
+
+        }else p_queue.pop();
+
+
 
         //Para evitar percorrer infinitamente
         if (first.depth > MAX_DEPTH)
             continue;
-        else if (first.depth > tempMaxDepth){
-            tempMaxDepth++;
-            while(!p_queue.empty()){
-                p_queue.pop();
-            }
-        }
+
 
         //TODO: Apenas no DFS, os robots e direções passar a random para mitigar ciclos & remover max_depth depois(?)
 
@@ -390,10 +402,11 @@ Node alg_progDeep(Node startN, Map currMap)
                         return toInsert;
                     }
 
-                        //Push to queue
+                    //Push to queue
                     else
                     {
                         insertRet = prevStates.insert(pair<vector<pair<int, int>>, int>(robotToPositions(toInsert.robots), toInsert.depth));
+
                         if (!insertRet.second) //Já foi percorrido
                         {
                             if (toInsert.depth < insertRet.first->second) //Chegou com profundidade menor portanto vai para a p_queue
@@ -406,8 +419,9 @@ Node alg_progDeep(Node startN, Map currMap)
                                 continue;
                             }
                         }
-                        else //Ainda não vou percorrido
+                        else { //Ainda não vou percorrido
                             p_queue.push(toInsert);
+                        }
                     }
                 }
             }
