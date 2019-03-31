@@ -138,7 +138,7 @@ Node alg_dfs(Node startN, Map currMap)
     //Se chegar aqui, quer dizer que ficou sem nós por expandir, logo não há solução
 
     ret.depth = -1; // Depth = -1 quer dizer que não encontrou solução
-
+    ret.expansions = n_expansions;
     return ret;
 }
 
@@ -215,7 +215,7 @@ Node alg_bfs(Node startN, Map currMap)
     //Se chegar aqui, quer dizer que ficou sem nós por expandir, logo não há solução
 
     ret.depth = -1; // Depth = -1 quer dizer que não encontrou solução
-
+    ret.expansions = n_expansions;
     return ret;
 }
 
@@ -314,7 +314,7 @@ Node alg_Astar(Node startN, Map currMap, int heur)
     //Se chegar aqui, quer dizer que ficou sem nós por expandir, logo não há solução
 
     ret.depth = -1; // Depth = -1 quer dizer que não encontrou solução
-
+    ret.expansions = n_expansions;
     return ret;
 }
 
@@ -327,9 +327,10 @@ Node alg_greedy(Node startN, Map currMap)
     return ret;
 }
 
-Node alg_progDeep(Node startN, Map currMap){
+Node alg_progDeep(Node startN, Map currMap)
+{
     Node ret;
-    int tempMaxDepth=0;
+    int tempMaxDepth = 0;
     int n_expansions = 0;
 
     map<vector<pair<int, int>>, int> prevStates;
@@ -345,26 +346,27 @@ Node alg_progDeep(Node startN, Map currMap){
     p_queue.push(startN);
     prevStates.insert(pair<vector<pair<int, int>>, int>(robotToPositions(startN.robots), startN.depth));
 
-
-    while (p_queue.size() > 0){
+    while (p_queue.size() > 0)
+    {
 
         Node first = p_queue.top();
 
-        if (first.depth == tempMaxDepth - 1){
+        if (first.depth == tempMaxDepth - 1)
+        {
 
             tempMaxDepth++;
             prevStates = map<vector<pair<int, int>>, int>();
 
-            while(!p_queue.empty()){
+            while (!p_queue.empty())
+            {
                 p_queue.pop();
             }
 
             p_queue.push(startN);
             first = p_queue.top();
-
         }
 
-         p_queue.pop();
+        p_queue.pop();
 
         //Para evitar percorrer infinitamente
         if (first.depth > MAX_DEPTH)
@@ -373,9 +375,11 @@ Node alg_progDeep(Node startN, Map currMap){
         //TODO: Apenas no DFS, os robots e direções passar a random para mitigar ciclos & remover max_depth depois(?)
 
         //itera pelos robots
-        for (u_int r = 0; r < currMap.robots.size(); r++){
+        for (u_int r = 0; r < currMap.robots.size(); r++)
+        {
             //itera pelas direções
-            for (u_int d = 0; d < 4; d++){
+            for (u_int d = 0; d < 4; d++)
+            {
 
                 currMap.robots = first.robots;
                 currMap.createLayoutWithRobots();
@@ -408,9 +412,11 @@ Node alg_progDeep(Node startN, Map currMap){
                                 insertRet.first->second = toInsert.depth;
                                 p_queue.push(toInsert);
                             }
-                            else continue; // Ignorar node porque já passou lá com profundidade menor
+                            else
+                                continue; // Ignorar node porque já passou lá com profundidade menor
                         }
-                        else p_queue.push(toInsert); //Ainda não vou percorrido
+                        else
+                            p_queue.push(toInsert); //Ainda não vou percorrido
                     }
                 }
             }
@@ -419,7 +425,7 @@ Node alg_progDeep(Node startN, Map currMap){
 
     //Se chegar aqui, quer dizer que ficou sem nós por expandir, logo não há solução
     ret.depth = -1; // Depth = -1 quer dizer que não encontrou solução
-
+    ret.expansions = n_expansions;
     return ret;
 }
 
@@ -452,6 +458,8 @@ int calcHeuristic(int option, vector<Robot> &r, Map &currMap)
         return 0;
     case 2: // lines/cols alligned
         return heurLineCol(r, currMap);
+    case 3:
+        return heurLineCol2(r, currMap);
 
     default:
         break;
@@ -471,6 +479,58 @@ int heurLineCol(vector<Robot> &r, Map &currMap)
                 ret++;
             if (r.at(i).col_c != r.at(i).final_col)
                 ret++;
+        }
+    }
+    return ret;
+}
+
+int heurLineCol2(vector<Robot> &r, Map &currMap)
+{
+    int ret = 0;
+    for (u_int i = 0; i < r.size(); i++)
+    {
+        if (!r.at(i).is_helper)
+        {
+            if (r.at(i).line_c != r.at(i).final_line) //Lines not aligned
+                ret++;
+            else //Lines aligned
+            {
+                int increment = 1;
+                if (r.at(i).line_c > r.at(i).final_line) //Line is above
+                    increment = -1;
+                int auxLine = r.at(i).line_c;
+                int auxCol = r.at(i).col_c;
+                while (auxLine != r.at(i).final_line)
+                {
+                    auxLine += increment;
+                    if (currMap.layoutWithRobots[auxLine][auxCol] == 'X') //If it found an obstacle
+                    {
+                        cout << "Found Obstable in same Col\n";
+                        ret += 3;
+                        break;
+                    }
+                }
+            }
+            if (r.at(i).col_c != r.at(i).final_col) //Cols not aligned
+                ret++;
+            else //Cols aligned
+            {
+                int increment = 1;
+                if (r.at(i).col_c > r.at(i).final_col) //Col is to the left
+                    increment = -1;
+                int auxLine = r.at(i).line_c;
+                int auxCol = r.at(i).col_c;
+                while (auxCol != r.at(i).final_col)
+                {
+                    auxCol += increment;
+                    if (currMap.layoutWithRobots[auxLine][auxCol] == 'X') //If it found an obstacle
+                    {
+                        cout << "Found Obstable in same Line\n";
+                        ret += 3;
+                        break;
+                    }
+                }
+            }
         }
     }
     return ret;

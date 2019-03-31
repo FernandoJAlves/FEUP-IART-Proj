@@ -239,6 +239,7 @@ void Game::botMode(int searchMethod)
         if (ret.depth == -1) //Algorithm did not find an answer
         { 
             cout << "\nAlgorithm Could Not Find an Answer...\n";
+            cout << "Expanded " << ret.expansions << " nodes\n";
             cout << fixed << setprecision(1) << "Elapsed time: " << elapsed.count() * 1000 << " ms\n\n";
             return;
         }
