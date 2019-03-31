@@ -137,6 +137,7 @@ int heuristicMenu()
     cout << "1 - Default Heuristic\n";
     cout << "2 - Lines/Columns Alligned\n";
     cout << "3 - Lines/Columns Obstacles\n";
+    cout << "4 - Area Occupied\n";
     cout << "Option: ";
     cin >> input;
 
@@ -148,6 +149,8 @@ int heuristicMenu()
         return 2;
     case 3:
         return 3;
+    case 4:
+        return 4;
 
     default:
         cout << "Invalid mode input!\n";

@@ -49,6 +49,7 @@ vector<pair<int,int>> robotToPositions(vector<Robot> r);
 int calcHeuristic(int option, vector<Robot> &r, Map &currMap);
 int heurLineCol(vector<Robot> &r, Map &currMap);
 int heurLineCol2(vector<Robot> &r, Map &currMap);
+int heurAreaDens(vector<Robot> &r, Map &currMap);
 
 
 

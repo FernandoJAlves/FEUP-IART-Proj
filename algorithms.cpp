@@ -228,7 +228,10 @@ Node alg_Astar(Node startN, Map currMap, int heur)
 
     priority_queue<Node, vector<Node>, decltype(cmp)> p_queue(cmp);
 
+    currMap.robots = startN.robots;
+    currMap.createLayoutWithRobots();
     startN.heuristic = calcHeuristic(heur, startN.robots, currMap); //TODO: Do heuristic selector
+    
     p_queue.push(startN);
     prevStates.insert(pair<vector<pair<int, int>>, int>(robotToPositions(startN.robots), startN.depth));
 
@@ -263,7 +266,6 @@ Node alg_Astar(Node startN, Map currMap, int heur)
                 {
                     //sleep(1);
                     n_expansions++;
-                    //cout << "Expansions: " << n_expansions << '\n';
                     Node toInsert;
                     toInsert.robots = currMap.robots;
                     toInsert.depth = first.depth + 1;
@@ -462,6 +464,8 @@ int calcHeuristic(int option, vector<Robot> &r, Map &currMap)
         return heurLineCol(r, currMap);
     case 3:
         return heurLineCol2(r, currMap);
+    case 4:
+        return heurAreaDens(r, currMap);
 
     default:
         break;
@@ -488,6 +492,7 @@ int heurLineCol(vector<Robot> &r, Map &currMap)
 
 int heurLineCol2(vector<Robot> &r, Map &currMap)
 {
+    //cout << "Size: " << currMap.layoutWithRobots.size() << '\n';
     int ret = 0;
     for (u_int i = 0; i < r.size(); i++)
     {
@@ -513,7 +518,6 @@ int heurLineCol2(vector<Robot> &r, Map &currMap)
                     //cout << "Char: " << currMap.layoutWithRobots[auxLine][auxCol] << endl;
                     if (currMap.layoutWithRobots[auxLine][auxCol] == '1') //If it found an obstacle
                     {
-                        //cout << "Found Obstable in same Line\n";
                         ret += 3;
                         break;
                     }
@@ -535,7 +539,6 @@ int heurLineCol2(vector<Robot> &r, Map &currMap)
                     //cout << "Char: " << currMap.layoutWithRobots[auxLine][auxCol] << endl;
                     if (currMap.layoutWithRobots[auxLine][auxCol] == '1') //If it found an obstacle
                     {
-                        //cout << "Found Obstable in same Col\n";
                         ret += 3;
                         break;
                     }
@@ -553,8 +556,44 @@ int heurAreaDens(vector<Robot> &r, Map &currMap)
     {
         if (!r.at(i).is_helper)
         {
-            //Robot
-            //int area = 0; //WIP
+            int minCol, maxCol, minLine, maxLine;
+            if (r.at(i).col_c > r.at(i).final_col)
+            {
+                minCol = r.at(i).final_col;
+                maxCol = r.at(i).col_c;
+            }
+            else
+            {
+                maxCol = r.at(i).final_col;
+                minCol = r.at(i).col_c;
+            }
+            if (r.at(i).line_c > r.at(i).final_line)
+            {
+                minLine = r.at(i).final_line;
+                maxLine = r.at(i).line_c;
+            }
+            else
+            {
+                maxLine = r.at(i).final_line;
+                minLine = r.at(i).line_c;
+            }
+
+            int totalArea = (maxCol - minCol + 1) * (maxLine - minLine + 1); //total area to be analized
+            int obsCount = 0;                                                //Obstacle count
+            for (int lAux = minLine; lAux <= maxLine; lAux++)
+            {
+                for (int cAux = minCol; cAux <= maxCol; cAux++)
+                {
+                    if (currMap.layoutWithRobots[lAux][cAux] == '1') //Obstacle
+                        obsCount++;
+                }
+            }
+
+            double areaFilled = (double)obsCount / totalArea;
+            if(areaFilled > 0.3)  //TODO: Change so it is no so pessimist
+                ret += 10;
+            else if(areaFilled > 0.1)
+                ret += 1;
         }
     }
     return ret;
