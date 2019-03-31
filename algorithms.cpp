@@ -327,10 +327,10 @@ Node alg_greedy(Node startN, Map currMap)
     return ret;
 }
 
-Node alg_progDeep(Node startN, Map currMap)
-{
+Node alg_progDeep(Node startN, Map currMap){
     Node ret;
     int tempMaxDepth=0;
+    int n_expansions = 0;
 
     map<vector<pair<int, int>>, int> prevStates;
     pair<map<vector<pair<int, int>>, int>::iterator, bool> insertRet;
@@ -342,47 +342,41 @@ Node alg_progDeep(Node startN, Map currMap)
 
     priority_queue<Node, vector<Node>, decltype(cmp)> p_queue(cmp);
 
-
     p_queue.push(startN);
     prevStates.insert(pair<vector<pair<int, int>>, int>(robotToPositions(startN.robots), startN.depth));
 
-    int n_expansions = 0;
 
-    while (p_queue.size() > 0)
-    {
+    while (p_queue.size() > 0){
 
         Node first = p_queue.top();
 
-
-        if (first.depth > tempMaxDepth){
+        if (first.depth == tempMaxDepth - 1){
 
             tempMaxDepth++;
-
             prevStates = map<vector<pair<int, int>>, int>();
 
             while(!p_queue.empty()){
                 p_queue.pop();
             }
+
             p_queue.push(startN);
-             first = p_queue.top();
+            first = p_queue.top();
 
-        }else p_queue.pop();
+        }
 
-
+         p_queue.pop();
 
         //Para evitar percorrer infinitamente
         if (first.depth > MAX_DEPTH)
             continue;
 
-
         //TODO: Apenas no DFS, os robots e direções passar a random para mitigar ciclos & remover max_depth depois(?)
 
         //itera pelos robots
-        for (u_int r = 0; r < currMap.robots.size(); r++)
-        {
+        for (u_int r = 0; r < currMap.robots.size(); r++){
             //itera pelas direções
-            for (u_int d = 0; d < 4; d++)
-            {
+            for (u_int d = 0; d < 4; d++){
+
                 currMap.robots = first.robots;
                 currMap.createLayoutWithRobots();
                 //Only expand useful moves
@@ -414,14 +408,9 @@ Node alg_progDeep(Node startN, Map currMap)
                                 insertRet.first->second = toInsert.depth;
                                 p_queue.push(toInsert);
                             }
-                            else // Ignorar node porque já passou lá com profundidade menor
-                            {
-                                continue;
-                            }
+                            else continue; // Ignorar node porque já passou lá com profundidade menor
                         }
-                        else { //Ainda não vou percorrido
-                            p_queue.push(toInsert);
-                        }
+                        else p_queue.push(toInsert); //Ainda não vou percorrido
                     }
                 }
             }
@@ -429,7 +418,6 @@ Node alg_progDeep(Node startN, Map currMap)
     }
 
     //Se chegar aqui, quer dizer que ficou sem nós por expandir, logo não há solução
-
     ret.depth = -1; // Depth = -1 quer dizer que não encontrou solução
 
     return ret;
