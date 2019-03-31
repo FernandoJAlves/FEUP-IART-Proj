@@ -27,7 +27,7 @@ void print_queue(T q)
 }
 
 // Selects the Algorithm and returns the Node
-Node switchAlgorithm(int n, Node start, Map currMap)
+Node switchAlgorithm(int n, Node start, Map currMap, int heur)
 {
     switch (n)
     {
@@ -42,14 +42,8 @@ Node switchAlgorithm(int n, Node start, Map currMap)
     case 5:
         return alg_greedy(start, currMap);
     case 6:
-    {
-        int h = heuristicMenu();
-        if (h != -1)
-            return alg_Astar(start, currMap, h);
-        else
-            return start;
-        break;
-    }
+        return alg_Astar(start, currMap, heur);
+    
 
     default:
         return start;
@@ -222,7 +216,7 @@ Node alg_bfs(Node startN, Map currMap)
 Node alg_Astar(Node startN, Map currMap, int heur)
 {
     Node ret;
-
+    ret.depth = -1; //In case there is no solution found
     //TODO: Geral, testar se o primeiro nó é solução
 
     map<vector<pair<int, int>>, int> prevStates;
@@ -270,6 +264,7 @@ Node alg_Astar(Node startN, Map currMap, int heur)
                 {
                     //sleep(1);
                     n_expansions++;
+                    //cout << "Expansions: " << n_expansions << '\n';
                     Node toInsert;
                     toInsert.robots = currMap.robots;
                     toInsert.depth = first.depth + 1;
@@ -282,8 +277,10 @@ Node alg_Astar(Node startN, Map currMap, int heur)
                     {
                         if (toInsert.depth < minDepth) //Nova melhor solução
                         {
+                            //cout << "Found a solution!\n";
                             minDepth = toInsert.depth;
                             ret = toInsert;
+                            //cout << "Line: " << ret.robots.at(0).line_c << "   Col: " << ret.robots.at(0).col_c << "   Depth: " << ret.depth << "\n";
                         }
                     }
 
@@ -311,8 +308,13 @@ Node alg_Astar(Node startN, Map currMap, int heur)
         }
     }
 
-    //Se chegar aqui, quer dizer que ficou sem nós por expandir, logo não há solução
+    //Encontrou solução na ultima iteração
+    if(ret.depth != -1){
+        ret.expansions = n_expansions;
+        return ret;
+    }
 
+    //Se chegar aqui, quer dizer que ficou sem nós por expandir, logo não há solução
     ret.depth = -1; // Depth = -1 quer dizer que não encontrou solução
     ret.expansions = n_expansions;
     return ret;

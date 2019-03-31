@@ -15,7 +15,7 @@ int mainMenu()
     switch (input)
     {
     case 1:
-        levelMenu(0, 0);
+        levelMenu(0, 0, 0);
         break;
     case 2:
         botModeMenu();
@@ -32,7 +32,7 @@ int mainMenu()
     return 0;
 }
 
-int levelMenu(int gamemode, int searchMethod)
+int levelMenu(int gamemode, int searchMethod, int heur)
 {
     int input;
     cout << "Select the level: \n";
@@ -48,19 +48,19 @@ int levelMenu(int gamemode, int searchMethod)
     switch (input)
     {
     case 1:
-        Game(gamemode, searchMethod, 0);
+        Game(gamemode, searchMethod, 0, heur);
         break;
     case 2:
-        Game(gamemode, searchMethod, 1);
+        Game(gamemode, searchMethod, 1, heur);
         break;
     case 3:
-        Game(gamemode, searchMethod, 2);
+        Game(gamemode, searchMethod, 2, heur);
         break;
     case 4:
-        Game(gamemode, searchMethod, 3);
+        Game(gamemode, searchMethod, 3, heur);
         break;
     case 5:
-        Game(gamemode, searchMethod, 4);
+        Game(gamemode, searchMethod, 4, heur);
         break;
     case 0:
         cout << "\nExiting game...\n";
@@ -92,23 +92,30 @@ int botModeMenu()
     switch (input)
     {
     case 1:
-        levelMenu(1, 1);
+        levelMenu(1, 1, 0);
         break;
     case 2:
-        levelMenu(1, 2);
+        levelMenu(1, 2, 0);
         break;
     case 3:
-        levelMenu(1, 3);
+        levelMenu(1, 3, 0);
         break;
     case 4:
-        levelMenu(1, 4);
+        levelMenu(1, 4, 0);
         break;
     case 5:
-        levelMenu(1, 5);
+        levelMenu(1, 5, 0);
         break;
     case 6:
-        levelMenu(1, 6);
+    {
+        int h = heuristicMenu();
+        if (h != -1)
+            levelMenu(1, 6, h);
+        else
+            exit(1);
         break;
+    }
+
     case 0:
         cout << "\nExiting game...\n";
         exit(1);

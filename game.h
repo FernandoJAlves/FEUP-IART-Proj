@@ -22,7 +22,7 @@ class Game
 
   public:
     Game(){};
-    Game(int gamemode, int searchMethod, int level);
+    Game(int gamemode, int searchMethod, int level, int heur);
 
     bool isGameOver = false;
     int level = 0;
@@ -30,14 +30,14 @@ class Game
     void readDataFromFiles();
 
     void soloMode();
-    void botMode(int searchMethod);
+    void botMode(int searchMethod, int heur);
 
     int interpretInputRobot(char robot); //devolve o Index do robot no array
     int interpretInputDir(char dir);     //devolve a dir a mover
     void setLevel(int level);
 };
 
-Node switchAlgorithm(int n, Node start, Map currMap);
+Node switchAlgorithm(int n, Node start, Map currMap, int heur);
 Node alg_dfs(Node startN, Map currMap);
 Node alg_bfs(Node startN, Map currMap);
 Node alg_Astar(Node startN, Map currMap, int heur);

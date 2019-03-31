@@ -12,7 +12,7 @@
 
 using namespace std;
 
-Game::Game(int gamemode, int searchMethod, int level)
+Game::Game(int gamemode, int searchMethod, int level, int heur)
 {
 
     //Ler aqui dos ficheiros
@@ -30,7 +30,7 @@ Game::Game(int gamemode, int searchMethod, int level)
 
     case 1:
         cout << "Starting a AI Game\n";
-        this->botMode(searchMethod);
+        this->botMode(searchMethod, heur);
         break;
 
     default:
@@ -204,7 +204,7 @@ void Game::soloMode()
 
 }
 
-void Game::botMode(int searchMethod)
+void Game::botMode(int searchMethod, int heur)
 {
 
     /*
@@ -230,7 +230,7 @@ void Game::botMode(int searchMethod)
         // Record start time
         auto start = chrono::high_resolution_clock::now();
 
-        Node ret = switchAlgorithm(searchMethod, startN, currMap);
+        Node ret = switchAlgorithm(searchMethod, startN, currMap, heur);
 
         // Record end time
         auto finish = chrono::high_resolution_clock::now();
