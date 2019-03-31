@@ -8,6 +8,7 @@
 #include <cctype>
 #include <unistd.h>
 #include <chrono> // for high_resolution_clock
+#include <iomanip>
 
 using namespace std;
 
@@ -238,7 +239,7 @@ void Game::botMode(int searchMethod)
         if (ret.depth == -1) //Algorithm did not find an answer
         { 
             cout << "\nAlgorithm Could Not Find an Answer...\n";
-            cout << "Elapsed time: " << elapsed.count() << " s\n\n";
+            cout << fixed << setprecision(1) << "Elapsed time: " << elapsed.count() * 1000 << " ms\n\n";
             return;
         }
         else
@@ -246,7 +247,10 @@ void Game::botMode(int searchMethod)
             cout << "\nAlgorithm Finished Calculation Successfully!\n";
             cout << "Solution Found has " << ret.depth << " steps\n";
             cout << "Expanded " << ret.expansions << " nodes\n";
-            cout << "Elapsed time: " << elapsed.count() << " s\n\n";
+
+            cout << fixed << setprecision(1) << "Elapsed time: " << elapsed.count() * 1000  << " ms";
+            if(elapsed.count()>1) cout << " (" << elapsed.count() <<"s) \n\n";
+            else cout << "\n\n";
         }
 
         vector<pair<int, int>> moveSeq = ret.moveSeq;
