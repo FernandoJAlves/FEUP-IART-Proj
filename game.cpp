@@ -16,7 +16,7 @@ Game::Game(int gamemode, int searchMethod, int level, int heur)
 {
 
     //Ler aqui dos ficheiros
-    this->level=level;
+    this->level = level;
     readDataFromFiles();
 
     //TODO: Deixar o user escolher o lvl onde vai começar (0,1,2,...)
@@ -157,7 +157,7 @@ void Game::soloMode()
 
             //O user quer continuar a jogar
             level++;
-            if(level >= (int)maps.size())
+            if (level >= (int)maps.size())
                 isGameOver = true;
             continue;
         }
@@ -183,7 +183,8 @@ void Game::soloMode()
             if (dir == -1)
                 isInputValid = false;
             if (index >= (int)currMap.robots.size()) //check if the selected robot exists
-                isInputValid = false;
+                if (dir != 4 && dir != 5)
+                    isInputValid = false;
 
             //Print if error
             if (!isInputValid)
@@ -193,15 +194,25 @@ void Game::soloMode()
 
         if (dir == 4)
         {
-            isGameOver = true;
-            continue;
+            cout << "Leaving game...\n";
+            return;
         }
-
-        currMap.moveRobot(index, dir);
+        if (dir == 5)
+        {
+            Node startN;
+            startN.robots = currMap.robots;
+            Node ret = switchAlgorithm(6, startN, currMap, 3); //use A* with heuristic nº3
+            cout << "The best move is: " << this->convertOutputIndex(ret.moveSeq.at(0).first) << this->convertOutputDir(ret.moveSeq.at(0).second) << '\n';
+            //cin.get();
+            cin.ignore(256, '\n');
+        }
+        else
+        {
+            currMap.moveRobot(index, dir);
+        }
     }
 
     cout << "\nYou finished all the levels!\n\n";
-
 }
 
 void Game::botMode(int searchMethod, int heur)
@@ -237,7 +248,7 @@ void Game::botMode(int searchMethod, int heur)
         chrono::duration<double> elapsed = finish - start;
 
         if (ret.depth == -1) //Algorithm did not find an answer
-        { 
+        {
             cout << "\nAlgorithm Could Not Find an Answer...\n";
             cout << "Expanded " << ret.expansions << " nodes\n";
             cout << fixed << setprecision(1) << "Elapsed time: " << elapsed.count() * 1000 << " ms\n\n";
@@ -249,9 +260,11 @@ void Game::botMode(int searchMethod, int heur)
             cout << "Solution Found has " << ret.depth << " steps\n";
             cout << "Expanded " << ret.expansions << " nodes\n";
 
-            cout << fixed << setprecision(1) << "Elapsed time: " << elapsed.count() * 1000  << " ms";
-            if(elapsed.count()>1) cout << " (" << elapsed.count() <<"s) \n\n";
-            else cout << "\n\n";
+            cout << fixed << setprecision(1) << "Elapsed time: " << elapsed.count() * 1000 << " ms";
+            if (elapsed.count() > 1)
+                cout << " (" << elapsed.count() << "s) \n\n";
+            else
+                cout << "\n\n";
         }
 
         vector<pair<int, int>> moveSeq = ret.moveSeq;
@@ -276,7 +289,8 @@ void Game::botMode(int searchMethod, int heur)
         cout << "Congratulations! Proceed to next level? (Y/N):  ";
 
         bool isCValid = false;
-        do{
+        do
+        {
             cin >> c;
             if (c == 'N' || c == 'n')
                 return;
@@ -288,7 +302,7 @@ void Game::botMode(int searchMethod, int heur)
 
         //O user quer continuar a jogar
         level++;
-        if(level >= (int)maps.size())
+        if (level >= (int)maps.size())
             isGameOver = true;
         continue;
     }
@@ -339,5 +353,29 @@ int Game::interpretInputDir(char dir)
 
     default:
         return -1;
+    }
+}
+
+char Game::convertOutputIndex(int index)
+{
+    char ret = index + 97;
+    return ret;
+}
+
+char Game::convertOutputDir(int dir)
+{
+    switch (dir)
+    {
+    case 0:
+        return 'w';
+    case 1:
+        return 'd';
+    case 2:
+        return 's';
+    case 3:
+        return 'a';
+
+    default:
+        return 'h'; //ask for help
     }
 }
