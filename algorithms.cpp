@@ -43,7 +43,6 @@ Node switchAlgorithm(int n, Node start, Map currMap, int heur)
         return alg_greedy(start, currMap);
     case 6:
         return alg_Astar(start, currMap, heur);
-    
 
     default:
         return start;
@@ -268,7 +267,7 @@ Node alg_Astar(Node startN, Map currMap, int heur)
                     Node toInsert;
                     toInsert.robots = currMap.robots;
                     toInsert.depth = first.depth + 1;
-                    toInsert.heuristic = calcHeuristic(heur, startN.robots, currMap);
+                    toInsert.heuristic = calcHeuristic(heur, currMap.robots, currMap);
                     toInsert.moveSeq = first.moveSeq;
                     toInsert.moveSeq.push_back(make_pair(r, d));
 
@@ -309,7 +308,8 @@ Node alg_Astar(Node startN, Map currMap, int heur)
     }
 
     //Encontrou solução na ultima iteração
-    if(ret.depth != -1){
+    if (ret.depth != -1)
+    {
         ret.expansions = n_expansions;
         return ret;
     }
@@ -493,21 +493,27 @@ int heurLineCol2(vector<Robot> &r, Map &currMap)
     {
         if (!r.at(i).is_helper)
         {
+            //cout << "\nLine_c: " << r.at(i).line_c << "\tFinal Line: " << r.at(i).final_line << '\n';
+            //cout << "Col_c: " << r.at(i).col_c << "\tFinal Col: " << r.at(i).final_col << '\n';
             if (r.at(i).line_c != r.at(i).final_line) //Lines not aligned
+            {
+                //cout << "Col no aligned\n";
                 ret++;
+            }
             else //Lines aligned
             {
                 int increment = 1;
-                if (r.at(i).line_c > r.at(i).final_line) //Line is above
+                if (r.at(i).col_c > r.at(i).final_col) //Col is to the left
                     increment = -1;
                 int auxLine = r.at(i).line_c;
                 int auxCol = r.at(i).col_c;
-                while (auxLine != r.at(i).final_line)
+                while (auxCol != r.at(i).final_col)
                 {
-                    auxLine += increment;
-                    if (currMap.layoutWithRobots[auxLine][auxCol] == 'X') //If it found an obstacle
+                    auxCol += increment;
+                    //cout << "Char: " << currMap.layoutWithRobots[auxLine][auxCol] << endl;
+                    if (currMap.layoutWithRobots[auxLine][auxCol] == '1') //If it found an obstacle
                     {
-                        cout << "Found Obstable in same Col\n";
+                        //cout << "Found Obstable in same Line\n";
                         ret += 3;
                         break;
                     }
@@ -518,16 +524,18 @@ int heurLineCol2(vector<Robot> &r, Map &currMap)
             else //Cols aligned
             {
                 int increment = 1;
-                if (r.at(i).col_c > r.at(i).final_col) //Col is to the left
+                if (r.at(i).line_c > r.at(i).final_line) //Line is above
                     increment = -1;
                 int auxLine = r.at(i).line_c;
                 int auxCol = r.at(i).col_c;
-                while (auxCol != r.at(i).final_col)
+                //cout << "AuxLine: " << auxLine << "\tAuxCol: " << auxCol << '\n';
+                while (auxLine != r.at(i).final_line)
                 {
-                    auxCol += increment;
-                    if (currMap.layoutWithRobots[auxLine][auxCol] == 'X') //If it found an obstacle
+                    auxLine += increment;
+                    //cout << "Char: " << currMap.layoutWithRobots[auxLine][auxCol] << endl;
+                    if (currMap.layoutWithRobots[auxLine][auxCol] == '1') //If it found an obstacle
                     {
-                        cout << "Found Obstable in same Line\n";
+                        //cout << "Found Obstable in same Col\n";
                         ret += 3;
                         break;
                     }
