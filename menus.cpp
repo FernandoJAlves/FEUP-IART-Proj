@@ -5,12 +5,23 @@
 int mainMenu()
 {
     int input;
-    cout << "Select your gamemode: \n";
-    cout << "1 - Human player\n";
-    cout << "2 - Bot Player\n";
-    cout << "0 - Leave Game\n";
-    cout << "Option: ";
-    cin >> input;
+    do
+    {
+        if (cin.fail())
+        {
+            cout << "Invalid input...\n\n";
+            cin.clear();
+            cin.ignore(1000, '\n');
+        }
+
+        cout << "Select your gamemode: \n";
+        cout << "1 - Human player\n";
+        cout << "2 - Bot Player\n";
+        cout << "0 - Leave Game\n";
+        cout << "Option: ";
+        cin >> input;
+
+    } while (cin.fail());
 
     switch (input)
     {
@@ -34,20 +45,30 @@ int mainMenu()
 
 int levelMenu(int gamemode, int searchMethod, int heur)
 {
+
     int input;
-    cout << "Select the level: \n";
-    cout << "1 - Level One (Easy - 1 Robot)\n";
-    cout << "2 - Level Two (Easy - 2 Robots)\n";
-    cout << "3 - Level Three (Easy - 1 Robot and 1 Helper)\n";
-    cout << "4 - Level Four\n";
-    cout << "5 - Level Five\n";
-    cout << "6 - Level Six (Hard - 1 Robot and 3 Helpers)\n";
-    cout << "7 - Level Seven (Hard - 3 Robots and 1 Helper)\n";
-    cout << "8 - Level Eight (Hard - 1 Robots and 6 Helpers)\n";
-    cout << "9 - Level Nine (Hard - 3 Robots and 1 Helper)\n";
-    cout << "0 - Leave Game\n";
-    cout << "Option: ";
-    cin >> input;
+    do
+    {
+        if (cin.fail())
+        {
+            cout << "Invalid input...\n\n";
+            cin.clear();
+            cin.ignore(1000, '\n');
+        }
+
+        cout << "Select the level: \n";
+        cout << "1 - Level One (Easy - 1 Robot and 1 Helper)\n";
+        cout << "2 - Level Two\n";
+        cout << "3 - Level Three\n";
+        cout << "4 - Level Four (Hard - 1 Robot and 3 Helpers)\n";
+        cout << "5 - Level Five (Hard - 3 Robots and 1 Helper)\n";
+        cout << "6 - Level Six (Hard - 1 Robots and 6 Helpers)\n";
+        cout << "7 - Level Seven (Hard - 3 Robots and 1 Helper)\n";
+        cout << "0 - Leave Game\n";
+        cout << "Option: ";
+        cin >> input;
+
+    } while (cin.fail());
 
     switch (input)
     {
@@ -58,9 +79,7 @@ int levelMenu(int gamemode, int searchMethod, int heur)
     case 5:
     case 6:
     case 7:
-    case 8:
-    case 9:
-        Game(gamemode, searchMethod, (input-1), heur);
+        Game(gamemode, searchMethod, (input - 1), heur);
         break;
     case 0:
         cout << "\nExiting game...\n";
@@ -76,18 +95,29 @@ int levelMenu(int gamemode, int searchMethod, int heur)
 
 int botModeMenu()
 {
-    //TODO: Fazer o input mais resistente (string e chars, não estourar)
+
     int input;
-    cout << "Select your Search Method: \n";
-    cout << "1 - DFS\n";
-    cout << "2 - BFS\n";
-    cout << "3 - Aprofundamento Progressivo\n";
-    cout << "4 - Custo Uniforme\n";
-    cout << "5 - Pesquisa Gulosa\n";
-    cout << "6 - A*\n";
-    cout << "0 - Leave Game\n";
-    cout << "Option: ";
-    cin >> input;
+    do
+    {
+        if (cin.fail())
+        {
+            cout << "Invalid input...\n\n";
+            cin.clear();
+            cin.ignore(1000, '\n');
+        }
+
+        cout << "Select your Search Method: \n";
+        cout << "1 - DFS\n";
+        cout << "2 - BFS\n";
+        cout << "3 - Aprofundamento Progressivo\n";
+        cout << "4 - Custo Uniforme\n";
+        cout << "5 - Pesquisa Gulosa\n";
+        cout << "6 - A*\n";
+        cout << "0 - Leave Game\n";
+        cout << "Option: ";
+        cin >> input;
+
+    } while (cin.fail());
 
     int h;
 
@@ -137,16 +167,27 @@ int botModeMenu()
 int heuristicMenu()
 {
 
-    //TODO: Fazer o input mais resistente (string e chars, não estourar)
     int input;
-    cout << "Select the Heuristic: \n";
-    cout << "1 - Default Heuristic\n";
-    cout << "2 - Lines/Columns Alligned\n";
-    cout << "3 - Lines/Columns Obstacles\n";
-    cout << "4 - Area Occupied\n";
-    cout << "5 - Lines/Columns Obstacles + Back Walls\n";
-    cout << "Option: ";
-    cin >> input;
+
+    do
+    {
+        if (cin.fail())
+        {
+            cout << "Invalid input...\n\n";
+            cin.clear();
+            cin.ignore(1000, '\n');
+        }
+
+        cout << "Select the Heuristic: \n";
+        cout << "1 - Default Heuristic\n";
+        cout << "2 - Lines/Columns Alligned\n";
+        cout << "3 - Lines/Columns Obstacles\n";
+        cout << "4 - Area Occupied\n";
+        cout << "5 - Lines/Columns Obstacles + Back Walls\n";
+        cout << "Option: ";
+        cin >> input;
+
+    } while (cin.fail());
 
     switch (input)
     {

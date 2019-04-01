@@ -19,8 +19,6 @@ Game::Game(int gamemode, int searchMethod, int level, int heur)
     this->level = level;
     readDataFromFiles();
 
-    //TODO: Deixar o user escolher o lvl onde vai começar (0,1,2,...)
-
     switch (gamemode)
     {
     case 0:
