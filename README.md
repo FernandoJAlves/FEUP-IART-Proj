@@ -46,8 +46,8 @@
     Xa b AX
     XXXXXXX
 
-    -You can quit a current game by typing any letter follow by the char 'q' or 'Q'. E.g.: 'aQ' to quit the game.
-    -You can also request an help move from the game by typing the letter of a robot followed by the char 'h' or 'H'.
+    -You can quit a current game by typing 'qq' or 'QQ'.
+    -You can also request an help move from the game by typing 'hh' or 'HH'.
 
 
 ###Bot Game Mode
