@@ -45,6 +45,7 @@ int mainMenu()
 
 int levelMenu(int gamemode, int searchMethod, int heur)
 {
+
     int input;
     do
     {
@@ -61,6 +62,10 @@ int levelMenu(int gamemode, int searchMethod, int heur)
         cout << "3 - Level Three (Easy - 1 Robot and 1 Helper)\n";
         cout << "4 - Level Four\n";
         cout << "5 - Level Five\n";
+        cout << "6 - Level Six (Hard - 1 Robot and 3 Helpers)\n";
+        cout << "7 - Level Seven (Hard - 3 Robots and 1 Helper)\n";
+        cout << "8 - Level Eight (Hard - 1 Robots and 6 Helpers)\n";
+        cout << "9 - Level Nine (Hard - 3 Robots and 1 Helper)\n";
         cout << "0 - Leave Game\n";
         cout << "Option: ";
         cin >> input;
@@ -70,19 +75,15 @@ int levelMenu(int gamemode, int searchMethod, int heur)
     switch (input)
     {
     case 1:
-        Game(gamemode, searchMethod, 0, heur);
-        break;
     case 2:
-        Game(gamemode, searchMethod, 1, heur);
-        break;
     case 3:
-        Game(gamemode, searchMethod, 2, heur);
-        break;
     case 4:
-        Game(gamemode, searchMethod, 3, heur);
-        break;
     case 5:
-        Game(gamemode, searchMethod, 4, heur);
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+        Game(gamemode, searchMethod, (input-1), heur);
         break;
     case 0:
         cout << "\nExiting game...\n";

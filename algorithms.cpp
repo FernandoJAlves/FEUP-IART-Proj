@@ -231,7 +231,7 @@ Node alg_Astar(Node startN, Map currMap, int heur)
     currMap.robots = startN.robots;
     currMap.createLayoutWithRobots();
     startN.heuristic = calcHeuristic(heur, startN.robots, currMap); //TODO: Do heuristic selector
-    
+
     p_queue.push(startN);
     prevStates.insert(pair<vector<pair<int, int>>, int>(robotToPositions(startN.robots), startN.depth));
 
@@ -340,7 +340,7 @@ Node alg_greedy(Node startN, Map currMap, int heur)
     currMap.robots = startN.robots;
     currMap.createLayoutWithRobots();
     startN.heuristic = calcHeuristic(heur, startN.robots, currMap); //TODO: Do heuristic selector
-    
+
     p_queue.push(startN);
     prevStates.insert(pair<vector<pair<int, int>>, int>(robotToPositions(startN.robots), startN.depth));
 
@@ -430,78 +430,67 @@ Node alg_progDeep(Node startN, Map currMap)
 
     p_queue.push(startN);
     prevStates.insert(pair<vector<pair<int, int>>, int>(robotToPositions(startN.robots), startN.depth));
+    Node first;
 
-    while (p_queue.size() > 0)
+    while (tempMaxDepth < MAX_DEPTH)
     {
 
-        Node first = p_queue.top();
+        tempMaxDepth++;
+        n_expansions=0;
+        prevStates = map<vector<pair<int, int>>, int>();
+        p_queue.push(startN);
 
-        if (first.depth == tempMaxDepth - 1)
-        {
 
-            tempMaxDepth++;
-            prevStates = map<vector<pair<int, int>>, int>();
-
-            while (!p_queue.empty())
-            {
-                p_queue.pop();
-            }
-
-            p_queue.push(startN);
+        while(!p_queue.empty()) {
             first = p_queue.top();
-        }
+            p_queue.pop();
 
-        p_queue.pop();
+            //Para evitar percorrer infinitamente
+            if (first.depth > tempMaxDepth)
+                continue;
 
-        //Para evitar percorrer infinitamente
-        if (first.depth > MAX_DEPTH)
-            continue;
+            //TODO: Apenas no DFS, os robots e direções passar a random para mitigar ciclos & remover max_depth depois(?)
 
-        //TODO: Apenas no DFS, os robots e direções passar a random para mitigar ciclos & remover max_depth depois(?)
+            //itera pelos robots
+            for (u_int r = 0; r < currMap.robots.size(); r++) {
+                //itera pelas direções
+                for (u_int d = 0; d < 4; d++) {
 
-        //itera pelos robots
-        for (u_int r = 0; r < currMap.robots.size(); r++)
-        {
-            //itera pelas direções
-            for (u_int d = 0; d < 4; d++)
-            {
+                    currMap.robots = first.robots;
+                    currMap.createLayoutWithRobots();
+                    //Only expand useful moves
+                    if (currMap.moveRobot(r, d) != -1) {
+                        n_expansions++;
+                        Node toInsert;
+                        toInsert.robots = currMap.robots;
+                        toInsert.depth = first.depth + 1;
+                        toInsert.moveSeq = first.moveSeq;
+                        toInsert.moveSeq.push_back(make_pair(r, d));
 
-                currMap.robots = first.robots;
-                currMap.createLayoutWithRobots();
-                //Only expand useful moves
-                if (currMap.moveRobot(r, d) != -1)
-                {
-                    n_expansions++;
-                    Node toInsert;
-                    toInsert.robots = currMap.robots;
-                    toInsert.depth = first.depth + 1;
-                    toInsert.moveSeq = first.moveSeq;
-                    toInsert.moveSeq.push_back(make_pair(r, d));
-
-                    //Check if gameover
-                    if (currMap.checkGameOver())
-                    {
-                        toInsert.expansions = n_expansions;
-                        return toInsert;
-                    }
-
-                    //Push to queue
-                    else
-                    {
-                        insertRet = prevStates.insert(pair<vector<pair<int, int>>, int>(robotToPositions(toInsert.robots), toInsert.depth));
-
-                        if (!insertRet.second) //Já foi percorrido
-                        {
-                            if (toInsert.depth < insertRet.first->second) //Chegou com profundidade menor portanto vai para a p_queue
-                            {
-                                insertRet.first->second = toInsert.depth;
-                                p_queue.push(toInsert);
-                            }
-                            else
-                                continue; // Ignorar node porque já passou lá com profundidade menor
+                        //Check if gameover
+                        if (currMap.checkGameOver()) {
+                            toInsert.expansions = n_expansions;
+                            return toInsert;
                         }
-                        else
-                            p_queue.push(toInsert); //Ainda não vou percorrido
+
+                            //Push to queue
+                        else {
+                            insertRet = prevStates.insert(
+                                    pair<vector<pair<int, int>>, int>(robotToPositions(toInsert.robots),
+                                                                      toInsert.depth));
+
+                            if (!insertRet.second) //Já foi percorrido
+                            {
+                                if (toInsert.depth <
+                                    insertRet.first->second) //Chegou com profundidade menor portanto vai para a p_queue
+                                {
+                                    insertRet.first->second = toInsert.depth;
+                                    p_queue.push(toInsert);
+                                } else
+                                    continue; // Ignorar node porque já passou lá com profundidade menor
+                            } else
+                                p_queue.push(toInsert); //Ainda não vou percorrido
+                        }
                     }
                 }
             }
@@ -669,9 +658,9 @@ int heurAreaDens(vector<Robot> &r, Map &currMap)
             }
 
             double areaFilled = (double)obsCount / totalArea;
-            if(areaFilled > 0.3)  //TODO: Change so it is no so pessimist
+            if (areaFilled > 0.3) //TODO: Change so it is no so pessimist
                 ret += 10;
-            else if(areaFilled > 0.1)
+            else if (areaFilled > 0.1)
                 ret += 1;
         }
     }
