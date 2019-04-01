@@ -137,7 +137,7 @@ void Game::soloMode()
             currMap.createLayoutWithRobots(); //updates layoutWithRobots
             currMap.displayWithRobots(currMap.layoutWithRobots);
 
-            cout << "Congratulations! Proceed to next level? (Y/N):  ";
+            cout << "Congratulations! Proceed to next level? (Y/N): ";
             //cout << "Map 1: " << maps.at(0).robots.size() << '\n';
             //cout << "Map 2: " << maps.at(1).robots.size() << '\n';
             char c;
@@ -287,7 +287,7 @@ void Game::botMode(int searchMethod, int heur)
         currMap.displayWithRobots(currMap.layoutWithRobots);
 
         char c;
-        cout << "Congratulations! Proceed to next level? (Y/N):  ";
+        cout << "Congratulations! Proceed to next level? (Y/N): ";
 
         bool isCValid = false;
         do
