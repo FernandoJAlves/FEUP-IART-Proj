@@ -41,6 +41,7 @@ Game::Game(int gamemode, int searchMethod, int level, int heur)
 
 void Game::readDataFromFiles()
 {
+    maps.clear();
     Map m;
     Robot r;
     vector<vector<char>> v;

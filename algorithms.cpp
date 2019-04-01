@@ -231,7 +231,7 @@ Node alg_Astar(Node startN, Map currMap, int heur)
     currMap.robots = startN.robots;
     currMap.createLayoutWithRobots();
     startN.heuristic = calcHeuristic(heur, startN.robots, currMap); //TODO: Do heuristic selector
-    
+
     p_queue.push(startN);
     prevStates.insert(pair<vector<pair<int, int>>, int>(robotToPositions(startN.robots), startN.depth));
 
@@ -340,7 +340,7 @@ Node alg_greedy(Node startN, Map currMap, int heur)
     currMap.robots = startN.robots;
     currMap.createLayoutWithRobots();
     startN.heuristic = calcHeuristic(heur, startN.robots, currMap); //TODO: Do heuristic selector
-    
+
     p_queue.push(startN);
     prevStates.insert(pair<vector<pair<int, int>>, int>(robotToPositions(startN.robots), startN.depth));
 
@@ -669,9 +669,9 @@ int heurAreaDens(vector<Robot> &r, Map &currMap)
             }
 
             double areaFilled = (double)obsCount / totalArea;
-            if(areaFilled > 0.3)  //TODO: Change so it is no so pessimist
+            if (areaFilled > 0.3) //TODO: Change so it is no so pessimist
                 ret += 10;
-            else if(areaFilled > 0.1)
+            else if (areaFilled > 0.1)
                 ret += 1;
         }
     }
