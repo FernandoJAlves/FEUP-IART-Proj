@@ -40,7 +40,7 @@ Node switchAlgorithm(int n, Node start, Map currMap, int heur)
     case 4:
         return alg_uniCost(start, currMap);
     case 5:
-        return alg_greedy(start, currMap);
+        return alg_greedy(start, currMap, heur);
     case 6:
         return alg_Astar(start, currMap, heur);
 
@@ -322,12 +322,93 @@ Node alg_Astar(Node startN, Map currMap, int heur)
     return ret;
 }
 
-Node alg_greedy(Node startN, Map currMap)
+Node alg_greedy(Node startN, Map currMap, int heur)
 {
     Node ret;
+    ret.depth = -1; //In case there is no solution found
+
+    map<vector<pair<int, int>>, int> prevStates;
+    pair<map<vector<pair<int, int>>, int>::iterator, bool> insertRet;
+
+    // Using lambda to compare elements.
+    auto cmp = [](Node left, Node right) {
+        return left.heuristic > right.heuristic;
+    };
+
+    priority_queue<Node, vector<Node>, decltype(cmp)> p_queue(cmp);
+
+    currMap.robots = startN.robots;
+    currMap.createLayoutWithRobots();
+    startN.heuristic = calcHeuristic(heur, startN.robots, currMap); //TODO: Do heuristic selector
+    
+    p_queue.push(startN);
+    prevStates.insert(pair<vector<pair<int, int>>, int>(robotToPositions(startN.robots), startN.depth));
+
+    int n_expansions = 0;
+
+    while (p_queue.size() > 0)
+    {
+        Node first = p_queue.top();
+        p_queue.pop();
+
+        //Para evitar percorrer infinitamente //TODO: Tirar e testar se continua a dar
+        if (first.depth > MAX_DEPTH)
+            continue;
+
+        //itera pelos robots
+        for (u_int r = 0; r < currMap.robots.size(); r++)
+        {
+            //itera pelas direções
+            for (u_int d = 0; d < 4; d++)
+            {
+                currMap.robots = first.robots;
+                currMap.createLayoutWithRobots();
+                //Only expand useful moves
+                if (currMap.moveRobot(r, d) != -1)
+                {
+
+                    n_expansions++;
+                    Node toInsert;
+                    toInsert.robots = currMap.robots;
+                    toInsert.depth = first.depth + 1;
+                    toInsert.heuristic = calcHeuristic(heur, currMap.robots, currMap);
+                    toInsert.moveSeq = first.moveSeq;
+                    toInsert.moveSeq.push_back(make_pair(r, d));
+
+                    //Check if gameover
+                    if (currMap.checkGameOver())
+                    {
+                        toInsert.expansions = n_expansions;
+                        return toInsert;
+                    }
+
+                    //Push to queue
+                    else
+                    {
+                        insertRet = prevStates.insert(pair<vector<pair<int, int>>, int>(robotToPositions(toInsert.robots), toInsert.depth));
+                        if (!insertRet.second) //Já foi percorrido
+                        {
+                            if (toInsert.depth < insertRet.first->second) //Chegou com profundidade menor portanto vai para a p_queue
+                            {
+                                insertRet.first->second = toInsert.depth;
+                                p_queue.push(toInsert);
+                            }
+                            else // Ignorar node porque já passou lá com profundidade menor
+                            {
+                                continue;
+                            }
+                        }
+                        else //Ainda não foi percorrido
+                            p_queue.push(toInsert);
+                    }
+                }
+            }
+        }
+    }
 
     //Se chegar aqui, quer dizer que ficou sem nós por expandir, logo não há solução
     ret.depth = -1; // Depth = -1 quer dizer que não encontrou solução
+    ret.expansions = n_expansions;
     return ret;
 }
 
@@ -435,11 +516,9 @@ Node alg_progDeep(Node startN, Map currMap)
 
 Node alg_uniCost(Node startN, Map currMap)
 {
-    Node ret;
-
-    //Se chegar aqui, quer dizer que ficou sem nós por expandir, logo não há solução
-    ret.depth = -1; // Depth = -1 quer dizer que não encontrou solução
-    return ret;
+    /*Como a nossa funcao g(n)=Depth(n) prq o custo da solucao é == ao nr. de jogadas == depth do no final, entao
+      Pesquisa de Custo Uniforme é igual a Pesquisa Primeiro em Largura */
+    return alg_bfs(startN, currMap);
 }
 
 vector<pair<int, int>> robotToPositions(vector<Robot> r)

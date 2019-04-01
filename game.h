@@ -44,7 +44,7 @@ Node switchAlgorithm(int n, Node start, Map currMap, int heur);
 Node alg_dfs(Node startN, Map currMap);
 Node alg_bfs(Node startN, Map currMap);
 Node alg_Astar(Node startN, Map currMap, int heur);
-Node alg_greedy(Node startN, Map currMap);
+Node alg_greedy(Node startN, Map currMap, int heur);
 Node alg_progDeep(Node startN, Map currMap);
 Node alg_uniCost(Node startN, Map currMap);
 vector<pair<int, int>> robotToPositions(vector<Robot> r);

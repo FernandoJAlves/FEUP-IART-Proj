@@ -89,6 +89,8 @@ int botModeMenu()
     cout << "Option: ";
     cin >> input;
 
+    int h;
+
     switch (input)
     {
     case 1:
@@ -104,11 +106,15 @@ int botModeMenu()
         levelMenu(1, 4, 0);
         break;
     case 5:
-        levelMenu(1, 5, 0);
+        h = heuristicMenu();
+        if (h != -1)
+            levelMenu(1, 5, h);
+        else
+            exit(1);
         break;
     case 6:
     {
-        int h = heuristicMenu();
+        h = heuristicMenu();
         if (h != -1)
             levelMenu(1, 6, h);
         else
