@@ -57,15 +57,13 @@ int levelMenu(int gamemode, int searchMethod, int heur)
         }
 
         cout << "Select the level: \n";
-        cout << "1 - Level One (Easy - 1 Robot)\n";
-        cout << "2 - Level Two (Easy - 2 Robots)\n";
-        cout << "3 - Level Three (Easy - 1 Robot and 1 Helper)\n";
-        cout << "4 - Level Four\n";
-        cout << "5 - Level Five\n";
-        cout << "6 - Level Six (Hard - 1 Robot and 3 Helpers)\n";
+        cout << "1 - Level One (Easy - 1 Robot and 1 Helper)\n";
+        cout << "2 - Level Two\n";
+        cout << "3 - Level Three\n";
+        cout << "4 - Level Four (Hard - 1 Robot and 3 Helpers)\n";
+        cout << "5 - Level Five (Hard - 3 Robots and 1 Helper)\n";
+        cout << "6 - Level Six (Hard - 1 Robots and 6 Helpers)\n";
         cout << "7 - Level Seven (Hard - 3 Robots and 1 Helper)\n";
-        cout << "8 - Level Eight (Hard - 1 Robots and 6 Helpers)\n";
-        cout << "9 - Level Nine (Hard - 3 Robots and 1 Helper)\n";
         cout << "0 - Leave Game\n";
         cout << "Option: ";
         cin >> input;
@@ -81,8 +79,6 @@ int levelMenu(int gamemode, int searchMethod, int heur)
     case 5:
     case 6:
     case 7:
-    case 8:
-    case 9:
         Game(gamemode, searchMethod, (input-1), heur);
         break;
     case 0:
