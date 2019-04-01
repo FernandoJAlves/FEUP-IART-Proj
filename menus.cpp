@@ -144,19 +144,18 @@ int heuristicMenu()
     cout << "2 - Lines/Columns Alligned\n";
     cout << "3 - Lines/Columns Obstacles\n";
     cout << "4 - Area Occupied\n";
+    cout << "5 - Lines/Columns Obstacles + Back Walls\n";
     cout << "Option: ";
     cin >> input;
 
     switch (input)
     {
     case 1:
-        return 1;
     case 2:
-        return 2;
     case 3:
-        return 3;
     case 4:
-        return 4;
+    case 5:
+        return input;
 
     default:
         cout << "Invalid mode input!\n";
@@ -164,4 +163,13 @@ int heuristicMenu()
     }
 
     return 0;
+}
+
+void clear_screen()
+{
+#ifdef WINDOWS
+    std::system("cls");
+#else
+    std::system("clear");
+#endif
 }

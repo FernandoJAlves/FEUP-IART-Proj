@@ -7,8 +7,10 @@
 int main()
 {
 
+
     while(true)
         mainMenu();
+        
     
 
     return 0;

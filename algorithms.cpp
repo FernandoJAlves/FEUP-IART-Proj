@@ -281,7 +281,6 @@ Node alg_Astar(Node startN, Map currMap, int heur)
                             //cout << "Found a solution!\n";
                             minDepth = toInsert.depth;
                             ret = toInsert;
-                            //cout << "Line: " << ret.robots.at(0).line_c << "   Col: " << ret.robots.at(0).col_c << "   Depth: " << ret.depth << "\n";
                         }
                     }
 
@@ -436,12 +435,12 @@ Node alg_progDeep(Node startN, Map currMap)
     {
 
         tempMaxDepth++;
-        n_expansions=0;
-        prevStates = map<vector<pair<int, int>>, int>();
+        n_expansions = 0;
+        prevStates.clear();
         p_queue.push(startN);
 
-
-        while(!p_queue.empty()) {
+        while (!p_queue.empty())
+        {
             first = p_queue.top();
             p_queue.pop();
 
@@ -449,17 +448,18 @@ Node alg_progDeep(Node startN, Map currMap)
             if (first.depth > tempMaxDepth)
                 continue;
 
-            //TODO: Apenas no DFS, os robots e direções passar a random para mitigar ciclos & remover max_depth depois(?)
-
             //itera pelos robots
-            for (u_int r = 0; r < currMap.robots.size(); r++) {
+            for (u_int r = 0; r < currMap.robots.size(); r++)
+            {
                 //itera pelas direções
-                for (u_int d = 0; d < 4; d++) {
+                for (u_int d = 0; d < 4; d++)
+                {
 
                     currMap.robots = first.robots;
                     currMap.createLayoutWithRobots();
                     //Only expand useful moves
-                    if (currMap.moveRobot(r, d) != -1) {
+                    if (currMap.moveRobot(r, d) != -1)
+                    {
                         n_expansions++;
                         Node toInsert;
                         toInsert.robots = currMap.robots;
@@ -468,16 +468,18 @@ Node alg_progDeep(Node startN, Map currMap)
                         toInsert.moveSeq.push_back(make_pair(r, d));
 
                         //Check if gameover
-                        if (currMap.checkGameOver()) {
+                        if (currMap.checkGameOver())
+                        {
                             toInsert.expansions = n_expansions;
                             return toInsert;
                         }
 
-                            //Push to queue
-                        else {
+                        //Push to queue
+                        else
+                        {
                             insertRet = prevStates.insert(
-                                    pair<vector<pair<int, int>>, int>(robotToPositions(toInsert.robots),
-                                                                      toInsert.depth));
+                                pair<vector<pair<int, int>>, int>(robotToPositions(toInsert.robots),
+                                                                  toInsert.depth));
 
                             if (!insertRet.second) //Já foi percorrido
                             {
@@ -486,9 +488,11 @@ Node alg_progDeep(Node startN, Map currMap)
                                 {
                                     insertRet.first->second = toInsert.depth;
                                     p_queue.push(toInsert);
-                                } else
+                                }
+                                else
                                     continue; // Ignorar node porque já passou lá com profundidade menor
-                            } else
+                            }
+                            else
                                 p_queue.push(toInsert); //Ainda não vou percorrido
                         }
                     }
@@ -530,10 +534,12 @@ int calcHeuristic(int option, vector<Robot> &r, Map &currMap)
         return 0;
     case 2: // lines/cols alligned
         return heurLineCol(r, currMap);
-    case 3:
+    case 3: // lines/cols alligned and obstacles
         return heurLineCol2(r, currMap);
-    case 4:
+    case 4: // area density
         return heurAreaDens(r, currMap);
+    case 5: // lines/cols alligned and obstacles and backwalls
+        return heurLineColWall(r, currMap);
 
     default:
         break;
@@ -560,17 +566,16 @@ int heurLineCol(vector<Robot> &r, Map &currMap)
 
 int heurLineCol2(vector<Robot> &r, Map &currMap)
 {
-    //cout << "Size: " << currMap.layoutWithRobots.size() << '\n';
     int ret = 0;
     for (u_int i = 0; i < r.size(); i++)
     {
         if (!r.at(i).is_helper)
         {
-            //cout << "\nLine_c: " << r.at(i).line_c << "\tFinal Line: " << r.at(i).final_line << '\n';
-            //cout << "Col_c: " << r.at(i).col_c << "\tFinal Col: " << r.at(i).final_col << '\n';
+            if (r.at(i).line_c == r.at(i).final_line && r.at(i).col_c == r.at(i).final_col) //posição final
+                continue;
+
             if (r.at(i).line_c != r.at(i).final_line) //Lines not aligned
             {
-                //cout << "Col no aligned\n";
                 ret++;
             }
             else //Lines aligned
@@ -583,10 +588,15 @@ int heurLineCol2(vector<Robot> &r, Map &currMap)
                 while (auxCol != r.at(i).final_col)
                 {
                     auxCol += increment;
-                    //cout << "Char: " << currMap.layoutWithRobots[auxLine][auxCol] << endl;
-                    if (currMap.layoutWithRobots[auxLine][auxCol] == '1') //If it found an obstacle
+                    char auxC = currMap.layoutWithRobots[auxLine][auxCol];
+                    if (isObstacle(auxC)) //If it found an obstacle
                     {
-                        ret += 3;
+                        ret += 4;
+                        break;
+                    }
+                    if (isSolid(auxC)) //If it found a robot
+                    {
+                        //ret += 0;
                         break;
                     }
                 }
@@ -600,14 +610,18 @@ int heurLineCol2(vector<Robot> &r, Map &currMap)
                     increment = -1;
                 int auxLine = r.at(i).line_c;
                 int auxCol = r.at(i).col_c;
-                //cout << "AuxLine: " << auxLine << "\tAuxCol: " << auxCol << '\n';
                 while (auxLine != r.at(i).final_line)
                 {
                     auxLine += increment;
-                    //cout << "Char: " << currMap.layoutWithRobots[auxLine][auxCol] << endl;
-                    if (currMap.layoutWithRobots[auxLine][auxCol] == '1') //If it found an obstacle
+                    char auxC = currMap.layoutWithRobots[auxLine][auxCol];
+                    if (isObstacle(auxC)) //If it found an obstacle
                     {
-                        ret += 3;
+                        ret += 4;
+                        break;
+                    }
+                    if (isSolid(auxC))
+                    { //If it found a robot
+                        //ret += 0;
                         break;
                     }
                 }
@@ -652,17 +666,108 @@ int heurAreaDens(vector<Robot> &r, Map &currMap)
             {
                 for (int cAux = minCol; cAux <= maxCol; cAux++)
                 {
-                    if (currMap.layoutWithRobots[lAux][cAux] == '1') //Obstacle
+                    if (isObstacle(currMap.layoutWithRobots[lAux][cAux])) //Obstacle
                         obsCount++;
                 }
             }
 
             double areaFilled = (double)obsCount / totalArea;
-            if (areaFilled > 0.3) //TODO: Change so it is no so pessimist
+            if (areaFilled > 0.3)
                 ret += 10;
             else if (areaFilled > 0.1)
                 ret += 1;
         }
     }
     return ret;
+}
+
+int heurLineColWall(vector<Robot> &r, Map &currMap)
+{
+    int ret = 0;
+    for (u_int i = 0; i < r.size(); i++)
+    {
+        if (!r.at(i).is_helper)
+        {
+            if (r.at(i).line_c == r.at(i).final_line && r.at(i).col_c == r.at(i).final_col) //posição final
+                continue;
+
+            if (r.at(i).line_c != r.at(i).final_line) //Lines not aligned
+            {
+                ret++;
+            }
+            else //Lines aligned
+            {
+                int increment = 1;
+                if (r.at(i).col_c > r.at(i).final_col) //Col is to the left
+                    increment = -1;
+                int auxLine = r.at(i).line_c;
+                int auxCol = r.at(i).col_c;
+                bool foundColObs = false;
+                while (auxCol != r.at(i).final_col)
+                {
+                    auxCol += increment;
+                    char auxC = currMap.layoutWithRobots[auxLine][auxCol];
+                    if (isObstacle(auxC)) //If it found an obstacle
+                    {
+                        ret += 4;
+                        foundColObs = true;
+                        break;
+                    }
+                }
+                if (!foundColObs)
+                {
+                    if (!isSolid(currMap.layoutWithRobots[auxLine][auxCol + increment])) //If it found an obstacle
+                    {
+                        ret += 5;
+                    }
+                }
+            }
+            if (r.at(i).col_c != r.at(i).final_col) //Cols not aligned
+                ret++;
+            else //Cols aligned
+            {
+                int increment = 1;
+                if (r.at(i).line_c > r.at(i).final_line) //Line is above
+                    increment = -1;
+                int auxLine = r.at(i).line_c;
+                int auxCol = r.at(i).col_c;
+                bool foundLineObs = false;
+                while (auxLine != r.at(i).final_line)
+                {
+                    auxLine += increment;
+                    char auxC = currMap.layoutWithRobots[auxLine][auxCol];
+                    if (isObstacle(auxC)) //If it found an obstacle
+                    {
+                        ret += 4;
+                        foundLineObs = true;
+                        break;
+                    }
+                }
+                if (!foundLineObs)
+                {
+                    if (!isSolid(currMap.layoutWithRobots[auxLine + increment][auxCol])) //If it found an obstacle
+                    {
+                        ret += 5;
+                    }
+                }
+            }
+        }
+    }
+    return ret;
+}
+
+bool isObstacle(char c)
+{
+    if (c == '1')
+        return true;
+    return false;
+}
+
+bool isSolid(char c)
+{
+    if (c == '1')
+        return true;
+    if (c >= 'a' && c <= 'z')
+        return true;
+    return false;
 }

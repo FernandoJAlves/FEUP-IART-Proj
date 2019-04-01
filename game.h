@@ -53,5 +53,8 @@ int calcHeuristic(int option, vector<Robot> &r, Map &currMap);
 int heurLineCol(vector<Robot> &r, Map &currMap);
 int heurLineCol2(vector<Robot> &r, Map &currMap);
 int heurAreaDens(vector<Robot> &r, Map &currMap);
+int heurLineColWall(vector<Robot> &r, Map &currMap);
+bool isObstacle(char c);
+bool isSolid(char c);
 
 #endif
