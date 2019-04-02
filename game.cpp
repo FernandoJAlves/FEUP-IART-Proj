@@ -27,7 +27,7 @@ Game::Game(int gamemode, int searchMethod, int level, int heur)
         break;
 
     case 1:
-        cout << "Starting a AI Game\n";
+        cout << "Starting an AI Game\n";
         this->botMode(searchMethod, heur);
         break;
 
@@ -136,8 +136,6 @@ void Game::soloMode()
             currMap.displayWithRobots(currMap.layoutWithRobots);
 
             cout << "Congratulations! Proceed to next level? (Y/N): ";
-            //cout << "Map 1: " << maps.at(0).robots.size() << '\n';
-            //cout << "Map 2: " << maps.at(1).robots.size() << '\n';
             char c;
             bool isCValid = false;
             do
@@ -200,7 +198,7 @@ void Game::soloMode()
         {
             Node startN;
             startN.robots = currMap.robots;
-            Node ret = switchAlgorithm(6, startN, currMap, 3); //use A* with heuristic nº3
+            Node ret = switchAlgorithm(6, startN, currMap, 3); //use A* with heuristic nº3 -> best on average
             cout << "The best move is: " << this->convertOutputIndex(ret.moveSeq.at(0).first) << this->convertOutputDir(ret.moveSeq.at(0).second) << '\n';
             //cin.get();
             cin.ignore(256, '\n');
@@ -212,6 +210,8 @@ void Game::soloMode()
     }
 
     cout << "\nYou finished all the levels!\n\n";
+    cin.ignore(256, '\n');
+    cin.get();
 }
 
 void Game::botMode(int searchMethod, int heur)
@@ -226,7 +226,6 @@ void Game::botMode(int searchMethod, int heur)
             1- dar pop da 1ª jogada
             2- executar a jogada
             3- mostrar estado atual (sleep(1))
-
     */
 
     while (!isGameOver)
@@ -265,6 +264,10 @@ void Game::botMode(int searchMethod, int heur)
             else
                 cout << "\n\n";
         }
+
+        cout << "Press ENTER to continue...\n"; //To avoid the animation to start immediatly
+        cin.ignore(256, '\n');
+        cin.get();
 
         vector<pair<int, int>> moveSeq = ret.moveSeq;
 
@@ -305,6 +308,10 @@ void Game::botMode(int searchMethod, int heur)
             isGameOver = true;
         continue;
     }
+
+    cout << "\nYou finished all the levels!\n\n";
+    cin.ignore(256, '\n');
+    cin.get();
 }
 
 int Game::interpretInputRobot(char robot)

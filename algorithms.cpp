@@ -63,6 +63,12 @@ Node alg_dfs(Node startN, Map currMap)
 
     priority_queue<Node, vector<Node>, decltype(cmp)> p_queue(cmp);
 
+    currMap.robots = startN.robots;
+    currMap.createLayoutWithRobots();
+    if (currMap.checkGameOver()){
+        return startN;
+    }
+
     p_queue.push(startN);
     prevStates.insert(pair<vector<pair<int, int>>, int>(robotToPositions(startN.robots), startN.depth));
 
@@ -76,8 +82,6 @@ Node alg_dfs(Node startN, Map currMap)
         //Para evitar percorrer infinitamente
         if (first.depth > MAX_DEPTH)
             continue;
-
-        //TODO: Apenas no DFS, os robots e direções passar a random para mitigar ciclos & remover max_depth depois(?)
 
         //itera pelos robots
         for (u_int r = 0; r < currMap.robots.size(); r++)
@@ -152,6 +156,12 @@ Node alg_bfs(Node startN, Map currMap)
 
     priority_queue<Node, vector<Node>, decltype(cmp)> p_queue(cmp);
 
+    currMap.robots = startN.robots;
+    currMap.createLayoutWithRobots();
+    if (currMap.checkGameOver()){
+        return startN;
+    }
+
     p_queue.push(startN);
     prevStates.insert(robotToPositions(startN.robots));
 
@@ -216,7 +226,6 @@ Node alg_Astar(Node startN, Map currMap, int heur)
 {
     Node ret;
     ret.depth = -1; //In case there is no solution found
-    //TODO: Geral, testar se o primeiro nó é solução
 
     map<vector<pair<int, int>>, int> prevStates;
     pair<map<vector<pair<int, int>>, int>::iterator, bool> insertRet;
@@ -230,7 +239,10 @@ Node alg_Astar(Node startN, Map currMap, int heur)
 
     currMap.robots = startN.robots;
     currMap.createLayoutWithRobots();
-    startN.heuristic = calcHeuristic(heur, startN.robots, currMap); //TODO: Do heuristic selector
+    if (currMap.checkGameOver()){
+        return startN;
+    }
+    startN.heuristic = calcHeuristic(heur, startN.robots, currMap);
 
     p_queue.push(startN);
     prevStates.insert(pair<vector<pair<int, int>>, int>(robotToPositions(startN.robots), startN.depth));
@@ -243,7 +255,7 @@ Node alg_Astar(Node startN, Map currMap, int heur)
         Node first = p_queue.top();
         p_queue.pop();
 
-        //Para evitar percorrer infinitamente //TODO: Tirar e testar se continua a dar
+        //Para evitar percorrer infinitamente
         if (first.depth > MAX_DEPTH)
             continue;
 
@@ -338,7 +350,11 @@ Node alg_greedy(Node startN, Map currMap, int heur)
 
     currMap.robots = startN.robots;
     currMap.createLayoutWithRobots();
-    startN.heuristic = calcHeuristic(heur, startN.robots, currMap); //TODO: Do heuristic selector
+    if (currMap.checkGameOver()){
+        return startN;
+    }
+
+    startN.heuristic = calcHeuristic(heur, startN.robots, currMap);
 
     p_queue.push(startN);
     prevStates.insert(pair<vector<pair<int, int>>, int>(robotToPositions(startN.robots), startN.depth));
@@ -350,7 +366,7 @@ Node alg_greedy(Node startN, Map currMap, int heur)
         Node first = p_queue.top();
         p_queue.pop();
 
-        //Para evitar percorrer infinitamente //TODO: Tirar e testar se continua a dar
+        //Para evitar percorrer infinitamente
         if (first.depth > MAX_DEPTH)
             continue;
 
@@ -426,6 +442,12 @@ Node alg_progDeep(Node startN, Map currMap)
     };
 
     priority_queue<Node, vector<Node>, decltype(cmp)> p_queue(cmp);
+    
+    currMap.robots = startN.robots;
+    currMap.createLayoutWithRobots();
+    if (currMap.checkGameOver()){
+        return startN;
+    }
 
     p_queue.push(startN);
     prevStates.insert(pair<vector<pair<int, int>>, int>(robotToPositions(startN.robots), startN.depth));

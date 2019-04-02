@@ -1,8 +1,6 @@
 #ifndef ROBOT_H
 #define ROBOT_H
 
-//class Map;
-
 class Robot {
     
   public:
@@ -10,17 +8,7 @@ class Robot {
     int final_line, final_col;
     char icon;
     bool is_helper;
-
-    //void move(Map map, char dir);
 };
-
-/*
-void Robot::move(Map map, char dir){
-    //TODO - Also, maybe pass the array of robots to detect collisions between them
-
-    return;
-}
-*/
 
 #endif
 
