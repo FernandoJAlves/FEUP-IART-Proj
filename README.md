@@ -56,7 +56,7 @@
 
 ### Bot Game Mode
 
-    -In this mode after selecting the game level and the search method to use you can check the bot 
+    - In this mode after selecting the game level and the search method to use you can check the bot 
     solving the puzzle and some statistics such as the number of steps, the nodes expanded in the game tree
     and the time needed to reach that puzzle solution.
-    -In the search methods 'Greedy-Search' and 'A*' you can also choose an heuristic to use from the five possible.
+    - In the search methods 'Greedy-Search' and 'A*' you can also choose an heuristic to use from the five possible.
