@@ -1,0 +1,23 @@
+@relation ex2.symbolic
+
+@attribute ceu {sol, nuvens, chuva}
+@attribute temperatura numeric
+@attribute humidade numeric
+@attribute vento {sim, nao}
+@attribute joga_tenis {sim, nao}
+
+@data
+sol,75,70,sim,sim
+sol,80,90,sim,nao
+sol,85,?,nao,nao
+sol,72,95,nao,nao
+sol,69,70,nao,sim
+nuvens,72,90,sim,sim
+nuvens,83,78,?,sim
+nuvens,64,65,sim,sim
+nuvens,81,75,nao,sim
+chuva,71,80,sim,nao
+chuva,65,70,sim,nao
+chuva,75,80,nao,sim
+chuva,?,80,nao,sim
+chuva,70,96,nao,sim

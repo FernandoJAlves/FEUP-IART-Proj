@@ -1,0 +1,16 @@
+@relation ex1.symbolic
+
+@attribute idade {jovem, media}
+@attribute nacionalidade {alema, francesa, italiana}
+@attribute situacao {solteiro, casado}
+@attribute emigra {sim, nao}
+
+@data
+jovem, alema, solteiro, sim
+media, francesa, solteiro, sim
+media, alema, solteiro, sim
+jovem, italiana, solteiro, nao
+media, alema, casado, nao
+media, italiana, solteiro, nao
+media, italiana, casado, nao
+jovem, alema, casado, nao
