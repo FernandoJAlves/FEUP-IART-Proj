@@ -735,7 +735,45 @@ Weighted Avg.    0,695    0,695    ?          0,695    ?          ?        0,500
 
 --------------------------------------------------
 
---------------------------------------------------
+Experiment 10B:
+(all attributes)
+
+C4.5 -> J48
+Pruned -> Yes
+k-fold -> k=5
+Time to build = 5.88s
+Time to test all instances = 0:40 (min:sec)
+Start at: 14:59:24
+
+Output saved at: classFacebook-j48Prun-allAttr-kfold5.txt
+
+=== Summary ===
+
+Correctly Classified Instances       64792               69.4955 %
+Incorrectly Classified Instances     28440               30.5045 %
+Kappa statistic                          0     
+Mean absolute error                      0.3126
+Root mean squared error                  0.3954
+Relative absolute error                 99.9983 %
+Root relative squared error            100      %
+Total Number of Instances            93232     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0,000    0,000    ?          0,000    ?          ?        0,500     0,124     -1
+                 0,000    0,000    ?          0,000    ?          ?        0,500     0,181     0
+                 1,000    1,000    0,695      1,000    0,820      ?        0,500     0,695     1
+Weighted Avg.    0,695    0,695    ?          0,695    ?          ?        0,500     0,531     
+
+=== Confusion Matrix ===
+
+     a     b     c   <-- classified as
+     0     0 11596 |     a = -1
+     0     0 16844 |     b = 0
+     0     0 64792 |     c = 1
+
+
 
 --------------------------------------------------
 
