@@ -1,0 +1,52 @@
+=== Run information ===
+
+Scheme:       weka.classifiers.lazy.IBk -K 20 -W 0 -A "weka.core.neighboursearch.LinearNNSearch -A \"weka.core.EuclideanDistance -R first-last\""
+Relation:     News_Final-weka.filters.unsupervised.attribute.NumericCleaner-min-1.0-min-default-1.0-max1.0-max-default1.0-closeto0.0-closeto-default0.0-closeto-tolerance1.0E-6-R7-11-decimals4-weka.filters.unsupervised.attribute.Remove-R10-11-weka.filters.unsupervised.attribute.NumericToNominal-Rlast
+Instances:    93232
+Attributes:   9
+              IDLink
+              Title
+              Headline
+              Source
+              Topic
+              PublishDate
+              SentimentTitle
+              SentimentHeadline
+              Facebook
+Test mode:    5-fold cross-validation
+
+=== Classifier model (full training set) ===
+
+IB1 instance-based classifier
+using 20 nearest neighbour(s) for classification
+
+
+Time taken to build model: 0.02 seconds
+
+=== Stratified cross-validation ===
+=== Summary ===
+
+Correctly Classified Instances       72567               77.8349 %
+Incorrectly Classified Instances     20665               22.1651 %
+Kappa statistic                          0.4349
+Mean absolute error                      0.2095
+Root mean squared error                  0.326 
+Relative absolute error                 67.0059 %
+Root relative squared error             82.4596 %
+Total Number of Instances            93232     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0,335    0,014    0,777      0,335    0,468      0,470    0,853     0,584     -1
+                 0,403    0,045    0,662      0,403    0,501      0,440    0,861     0,590     0
+                 0,955    0,565    0,794      0,955    0,867      0,485    0,844     0,911     1
+Weighted Avg.    0,778    0,403    0,768      0,778    0,751      0,475    0,848     0,813     
+
+=== Confusion Matrix ===
+
+     a     b     c   <-- classified as
+  3880  1258  6458 |     a = -1
+   432  6790  9622 |     b = 0
+   681  2214 61897 |     c = 1
+

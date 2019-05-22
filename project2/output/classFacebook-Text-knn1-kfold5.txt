@@ -1,0 +1,52 @@
+=== Run information ===
+
+Scheme:       weka.classifiers.lazy.IBk -K 1 -W 0 -A "weka.core.neighboursearch.LinearNNSearch -A \"weka.core.EuclideanDistance -R first-last\""
+Relation:     News_Final-weka.filters.unsupervised.attribute.NumericCleaner-min-1.0-min-default-1.0-max1.0-max-default1.0-closeto0.0-closeto-default0.0-closeto-tolerance1.0E-6-R7-11-decimals4-weka.filters.unsupervised.attribute.Remove-R10-11-weka.filters.unsupervised.attribute.NumericToNominal-Rlast
+Instances:    93232
+Attributes:   9
+              IDLink
+              Title
+              Headline
+              Source
+              Topic
+              PublishDate
+              SentimentTitle
+              SentimentHeadline
+              Facebook
+Test mode:    5-fold cross-validation
+
+=== Classifier model (full training set) ===
+
+IB1 instance-based classifier
+using 1 nearest neighbour(s) for classification
+
+
+Time taken to build model: 0.02 seconds
+
+=== Stratified cross-validation ===
+=== Summary ===
+
+Correctly Classified Instances       67931               72.8623 %
+Incorrectly Classified Instances     25301               27.1377 %
+Kappa statistic                          0.4248
+Mean absolute error                      0.1809
+Root mean squared error                  0.4253
+Relative absolute error                 57.8742 %
+Root relative squared error            107.582  %
+Total Number of Instances            93232     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0,532    0,072    0,511      0,532    0,521      0,452    0,731     0,342     -1
+                 0,503    0,109    0,504      0,503    0,503      0,394    0,697     0,356     0
+                 0,822    0,388    0,828      0,822    0,825      0,432    0,718     0,810     1
+Weighted Avg.    0,729    0,299    0,730      0,729    0,729      0,428    0,716     0,670     
+
+=== Confusion Matrix ===
+
+     a     b     c   <-- classified as
+  6170  1358  4068 |     a = -1
+  1397  8476  6971 |     b = 0
+  4508  6999 53285 |     c = 1
+

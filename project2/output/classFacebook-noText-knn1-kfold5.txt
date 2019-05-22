@@ -1,0 +1,49 @@
+=== Run information ===
+
+Scheme:       weka.classifiers.lazy.IBk -K 1 -W 0 -A "weka.core.neighboursearch.LinearNNSearch -A \"weka.core.EuclideanDistance -R first-last\""
+Relation:     News_Final-weka.filters.unsupervised.attribute.NumericCleaner-min-1.0-min-default-1.0-max1.0-max-default1.0-closeto0.0-closeto-default0.0-closeto-tolerance1.0E-6-R7-11-decimals4-weka.filters.unsupervised.attribute.Remove-R10-11-weka.filters.unsupervised.attribute.NumericToNominal-Rlast-weka.filters.unsupervised.attribute.Remove-R1-3
+Instances:    93232
+Attributes:   6
+              Source
+              Topic
+              PublishDate
+              SentimentTitle
+              SentimentHeadline
+              Facebook
+Test mode:    5-fold cross-validation
+
+=== Classifier model (full training set) ===
+
+IB1 instance-based classifier
+using 1 nearest neighbour(s) for classification
+
+
+Time taken to build model: 0.02 seconds
+
+=== Stratified cross-validation ===
+=== Summary ===
+
+Correctly Classified Instances       63432               68.0367 %
+Incorrectly Classified Instances     29800               31.9633 %
+Kappa statistic                          0.3218
+Mean absolute error                      0.2133
+Root mean squared error                  0.4589
+Relative absolute error                 68.2195 %
+Root relative squared error            116.0669 %
+Total Number of Instances            93232     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0,288    0,113    0,266      0,288    0,277      0,170    0,590     0,186     -1
+                 0,489    0,105    0,508      0,489    0,498      0,390    0,695     0,362     0
+                 0,800    0,443    0,804      0,800    0,802      0,356    0,682     0,789     1
+Weighted Avg.    0,680    0,341    0,684      0,680    0,682      0,339    0,673     0,637     
+
+=== Confusion Matrix ===
+
+     a     b     c   <-- classified as
+  3339  1951  6306 |     a = -1
+  2292  8245  6307 |     b = 0
+  6902  6042 51848 |     c = 1
+
