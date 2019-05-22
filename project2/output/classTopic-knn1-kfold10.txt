@@ -1,0 +1,52 @@
+=== Run information ===
+
+Scheme:       weka.classifiers.lazy.IBk -K 1 -W 0 -A "weka.core.neighboursearch.LinearNNSearch -A \"weka.core.EuclideanDistance -R first-last\""
+Relation:     News_Final-weka.filters.unsupervised.attribute.NumericCleaner-min-1.0-min-default-1.0-max1.0-max-default1.0-closeto0.0-closeto-default0.0-closeto-tolerance1.0E-6-R7-11-decimals4-weka.filters.unsupervised.attribute.Remove-R1-3,6
+Instances:    93232
+Attributes:   7
+              Source
+              Topic
+              SentimentTitle
+              SentimentHeadline
+              Facebook
+              GooglePlus
+              LinkedIn
+Test mode:    10-fold cross-validation
+
+=== Classifier model (full training set) ===
+
+IB1 instance-based classifier
+using 1 nearest neighbour(s) for classification
+
+
+Time taken to build model: 0.01 seconds
+
+=== Stratified cross-validation ===
+=== Summary ===
+
+Correctly Classified Instances       62846               67.4082 %
+Incorrectly Classified Instances     30386               32.5918 %
+Kappa statistic                          0.5402
+Mean absolute error                      0.163 
+Root mean squared error                  0.4028
+Relative absolute error                 45.9588 %
+Root relative squared error             95.6484 %
+Total Number of Instances            93232     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0,675    0,149    0,667      0,675    0,671      0,524    0,764     0,566     obama
+                 0,650    0,199    0,651      0,650    0,651      0,451    0,727     0,565     economy
+                 0,730    0,083    0,730      0,730    0,730      0,647    0,826     0,611     microsoft
+                 0,624    0,036    0,647      0,624    0,635      0,598    0,799     0,469     palestine
+Weighted Avg.    0,674    0,141    0,674      0,674    0,674      0,533    0,768     0,567     
+
+=== Confusion Matrix ===
+
+     a     b     c     d   <-- classified as
+ 19324  6448  1695  1142 |     a = obama
+  6613 22050  3783  1482 |     b = economy
+  1771  3741 15956   386 |     c = microsoft
+  1275  1625   425  5516 |     d = palestine
+
