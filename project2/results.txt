@@ -2,13 +2,20 @@ Notes:
 
 IDTitle, Title, Headline, Source, Topic, PublishDate, SentimentTitle, SentimentHeadline, Facebook, GooglePlus, LinkedIn
 
+A)
+
 Experiments 1 a 4 foram feitas usando os atributos: [Source, SentimentTitle, SentimentHeadline, Facebook, GooglePlus, LinkedIn] para determinar o valor de Topic. Usamos o dataset com os valores "Standardizados" (aka max = 1, min = -1). Foram usados os valores default destes classifiers (ver WEKA values para por no relatório)
 
 A Experiments 5 a 8 foram feitas para tentar melhorar o classifier, mudando o valor mínimo de nodes por leaf, sendo que os melhores resultados foram obtidos quando M=10 (experiment 8), a partir desse valor, aumentando o M reduzia o número de instâncias corretamente identificadas
 
+
+B)
+
+
+
 --------------------------------------------------
 
-Experiment 1:
+Experiment 1A:
 
 Attributes: 
 KNN -> k=1
@@ -53,7 +60,7 @@ Weighted Avg.    0,674    0,141    0,674      0,674    0,674      0,533    0,768
 --------------------------------------------------
 
 
-Experiment 2:
+Experiment 2A:
 
 KNN -> k=3
 k-fold -> k=10
@@ -96,7 +103,7 @@ Weighted Avg.    0,703    0,135    0,710      0,703    0,703      0,576    0,848
 
 --------------------------------------------------
 
-Experiment 3:
+Experiment 3A:
 
 C4.5 -> J48
 Pruned -> Yes
@@ -138,7 +145,7 @@ Weighted Avg.    0,738    0,121    0,743      0,738    0,739      0,625    0,879
 
 --------------------------------------------------
 
-Experiment 4:
+Experiment 4A:
 
 C4.5 -> J48
 Pruned -> No
@@ -180,7 +187,7 @@ Weighted Avg.    0,730    0,123    0,733      0,730    0,730      0,613    0,871
 
 --------------------------------------------------
 
-Experiment 5:
+Experiment 5A:
 
 C4.5 -> J48
 Pruned -> Yes
@@ -225,7 +232,7 @@ Weighted Avg.    0,738    0,121    0,742      0,738    0,738      0,624    0,872
 
 --------------------------------------------------
 
-Experiment 6:
+Experiment 6A:
 
 C4.5 -> J48
 Pruned -> Yes
@@ -268,7 +275,7 @@ Weighted Avg.    0,739    0,121    0,744      0,739    0,740      0,626    0,884
 
 --------------------------------------------------
 
-Experiment 7:
+Experiment 7A:
 
 C4.5 -> J48
 Pruned -> Yes
@@ -311,7 +318,7 @@ Weighted Avg.    0,740    0,121    0,745      0,740    0,740      0,627    0,890
 
 --------------------------------------------------
 
-Experiment 8:
+Experiment 8A:
 
 C4.5 -> J48
 Pruned -> Yes
@@ -355,10 +362,384 @@ Weighted Avg.    0,741    0,121    0,746      0,741    0,741      0,628    0,893
 
 
 
+
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+
+
+Experiment 1B:
+(without text attributes)
+
+KNN -> k=1
+k-fold -> k=5
+Time to build = 0.02s
+Time to test all instances = 7:30 (min:sec)
+Start at: 12:18:18
+
+Output saved at: classFacebook-noText-knn1-kfold5.txt
+
+=== Summary ===
+
+Correctly Classified Instances       63432               68.0367 %
+Incorrectly Classified Instances     29800               31.9633 %
+Kappa statistic                          0.3218
+Mean absolute error                      0.2133
+Root mean squared error                  0.4589
+Relative absolute error                 68.2195 %
+Root relative squared error            116.0669 %
+Total Number of Instances            93232     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0,288    0,113    0,266      0,288    0,277      0,170    0,590     0,186     -1
+                 0,489    0,105    0,508      0,489    0,498      0,390    0,695     0,362     0
+                 0,800    0,443    0,804      0,800    0,802      0,356    0,682     0,789     1
+Weighted Avg.    0,680    0,341    0,684      0,680    0,682      0,339    0,673     0,637     
+
+=== Confusion Matrix ===
+
+     a     b     c   <-- classified as
+  3339  1951  6306 |     a = -1
+  2292  8245  6307 |     b = 0
+  6902  6042 51848 |     c = 1
+
 --------------------------------------------------
 
+Experiment 2B:
+(with text)
+
+KNN -> k=1
+k-fold -> k=5
+Time to build = 0.02s
+Time to test all instances = 9:40 (min:sec)
+Start at: 12:26:10
+
+Output saved at: classFacebook-Text-knn1-kfold5.txt
+
+=== Summary ===
+
+Correctly Classified Instances       67931               72.8623 %
+Incorrectly Classified Instances     25301               27.1377 %
+Kappa statistic                          0.4248
+Mean absolute error                      0.1809
+Root mean squared error                  0.4253
+Relative absolute error                 57.8742 %
+Root relative squared error            107.582  %
+Total Number of Instances            93232     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0,532    0,072    0,511      0,532    0,521      0,452    0,731     0,342     -1
+                 0,503    0,109    0,504      0,503    0,503      0,394    0,697     0,356     0
+                 0,822    0,388    0,828      0,822    0,825      0,432    0,718     0,810     1
+Weighted Avg.    0,729    0,299    0,730      0,729    0,729      0,428    0,716     0,670     
+
+=== Confusion Matrix ===
+
+     a     b     c   <-- classified as
+  6170  1358  4068 |     a = -1
+  1397  8476  6971 |     b = 0
+  4508  6999 53285 |     c = 1
+
+
 
 --------------------------------------------------
 
+Experiment 3B:
+(with text)
 
+KNN -> k=3
+k-fold -> k=5
+Time to build = 0.02s
+Time to test all instances = 9:50 (min:sec)
+Start at: 12:51:49
+
+Output saved at: classFacebook-Text-knn3-kfold5.txt
+
+=== Summary ===
+
+Correctly Classified Instances       70922               76.0704 %
+Incorrectly Classified Instances     22310               23.9296 %
+Kappa statistic                          0.4704
+Mean absolute error                      0.1881
+Root mean squared error                  0.3468
+Relative absolute error                 60.1674 %
+Root relative squared error             87.7181 %
+Total Number of Instances            93232     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0,515    0,068    0,518      0,515    0,516      0,448    0,802     0,493     -1
+                 0,486    0,074    0,593      0,486    0,534      0,447    0,802     0,494     0
+                 0,876    0,391    0,836      0,876    0,856      0,502    0,807     0,871     1
+Weighted Avg.    0,761    0,294    0,753      0,761    0,755      0,485    0,806     0,756     
+
+=== Confusion Matrix ===
+
+     a     b     c   <-- classified as
+  5972  1236  4388 |     a = -1
+  1916  8189  6739 |     b = 0
+  3652  4379 56761 |     c = 1
+
+--------------------------------------------------
+
+Experiment 4B:
+(with text)
+
+KNN -> k=5
+k-fold -> k=5
+Time to build = 0.01s
+Time to test all instances = 10:00 (min:sec)
+Start at: 13:03:20
+
+Output saved at: classFacebook-Text-knn5-kfold5.txt
+
+=== Summary ===
+
+Correctly Classified Instances       72211               77.453  %
+Incorrectly Classified Instances     21021               22.547  %
+Kappa statistic                          0.4879
+Mean absolute error                      0.1928
+Root mean squared error                  0.3315
+Relative absolute error                 61.6688 %
+Root relative squared error             83.843  %
+Total Number of Instances            93232     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0,468    0,044    0,604      0,468    0,527      0,474    0,825     0,536     -1
+                 0,517    0,077    0,598      0,517    0,554      0,467    0,834     0,548     0
+                 0,896    0,408    0,833      0,896    0,864      0,517    0,831     0,890     1
+Weighted Avg.    0,775    0,303    0,762      0,775    0,766      0,503    0,830     0,784     
+
+=== Confusion Matrix ===
+
+     a     b     c   <-- classified as
+  5426  1450  4720 |     a = -1
+  1249  8704  6891 |     b = 0
+  2311  4400 58081 |     c = 1
+
+
+--------------------------------------------------
+
+Experiment 5B:
+(with text)
+
+KNN -> k=10
+k-fold -> k=10
+Time to build = 0.01s
+Time to test all instances = 10:15 (min:sec)
+Start at: 13:15:55
+
+Output saved at: classFacebook-Text-knn10-kfold5.txt
+
+=== Summary ===
+
+Correctly Classified Instances       72964               78.2607 %
+Incorrectly Classified Instances     20268               21.7393 %
+Kappa statistic                          0.4817
+Mean absolute error                      0.2004
+Root mean squared error                  0.3242
+Relative absolute error                 64.0885 %
+Root relative squared error             82.0119 %
+Total Number of Instances            93232     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0,407    0,025    0,699      0,407    0,514      0,486    0,844     0,569     -1
+                 0,491    0,065    0,624      0,491    0,549      0,469    0,857     0,586     0
+                 0,926    0,466    0,819      0,926    0,869      0,516    0,845     0,905     1
+Weighted Avg.    0,783    0,339    0,769      0,783    0,767      0,504    0,847     0,806     
+
+=== Confusion Matrix ===
+
+     a     b     c   <-- classified as
+  4717  1473  5406 |     a = -1
+   731  8264  7849 |     b = 0
+  1302  3507 59983 |     c = 1
+
+
+
+--------------------------------------------------
+
+Experiment 6B:
+(with text)
+
+KNN -> k=20
+k-fold -> k=10
+Time to build = 0.02s
+Time to test all instances = 10:20 (min:sec)
+Start at: 13:27:21
+
+Output saved at: classFacebook-Text-knn20-kfold5.txt
+
+=== Summary ===
+
+Correctly Classified Instances       72567               77.8349 %
+Incorrectly Classified Instances     20665               22.1651 %
+Kappa statistic                          0.4349
+Mean absolute error                      0.2095
+Root mean squared error                  0.326 
+Relative absolute error                 67.0059 %
+Root relative squared error             82.4596 %
+Total Number of Instances            93232     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0,335    0,014    0,777      0,335    0,468      0,470    0,853     0,584     -1
+                 0,403    0,045    0,662      0,403    0,501      0,440    0,861     0,590     0
+                 0,955    0,565    0,794      0,955    0,867      0,485    0,844     0,911     1
+Weighted Avg.    0,778    0,403    0,768      0,778    0,751      0,475    0,848     0,813     
+
+=== Confusion Matrix ===
+
+     a     b     c   <-- classified as
+  3880  1258  6458 |     a = -1
+   432  6790  9622 |     b = 0
+   681  2214 61897 |     c = 1
+
+--------------------------------------------------
+
+Experiment 7B:
+
+C4.5 -> J48
+Pruned -> Yes
+M = 2
+k-fold -> k=5
+Time to build = 7.18s
+Time to test all instances = 0:40 (min:sec)
+Start at: 13:41:05
+
+Output saved at: classFacebook-j48Prun-M10-kfold10.txt
+
+=== Summary ===
+
+Correctly Classified Instances       64792               69.4955 %
+Incorrectly Classified Instances     28440               30.5045 %
+Kappa statistic                          0     
+Mean absolute error                      0.3126
+Root mean squared error                  0.3954
+Relative absolute error                 99.9983 %
+Root relative squared error            100      %
+Total Number of Instances            93232     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0,000    0,000    ?          0,000    ?          ?        0,500     0,124     -1
+                 0,000    0,000    ?          0,000    ?          ?        0,500     0,181     0
+                 1,000    1,000    0,695      1,000    0,820      ?        0,500     0,695     1
+Weighted Avg.    0,695    0,695    ?          0,695    ?          ?        0,500     0,531     
+
+=== Confusion Matrix ===
+
+     a     b     c   <-- classified as
+     0     0 11596 |     a = -1
+     0     0 16844 |     b = 0
+     0     0 64792 |     c = 1
+
+
+
+--------------------------------------------------
+
+Experiment 8B:
+(teste SVM)
+
+SVM
+Kernel -> Default (ver valor)
+k-fold -> k=5
+N instances -> 4662 (5%)
+Time to build = 0.42s
+Time to test all instances = 0:20 (min:sec)
+Start at: 14:08:05
+
+Output saved at: classFacebook-svm-kernel1-5%-kfold5.txt
+
+=== Summary ===
+
+Correctly Classified Instances        3028               64.9507 %
+Incorrectly Classified Instances      1634               35.0493 %
+Kappa statistic                          0     
+Mean absolute error                      0.2337
+Root mean squared error                  0.4834
+Relative absolute error                 72.3079 %
+Root relative squared error            120.2744 %
+Total Number of Instances             4662     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 1,000    1,000    0,650      1,000    0,788      ?        0,500     0,650     -1
+                 0,000    0,000    ?          0,000    ?          ?        0,500     0,048     0
+                 0,000    0,000    ?          0,000    ?          ?        0,500     0,302     1
+Weighted Avg.    0,650    0,650    ?          0,650    ?          ?        0,500     0,515     
+
+=== Confusion Matrix ===
+
+    a    b    c   <-- classified as
+ 3028    0    0 |    a = -1
+  226    0    0 |    b = 0
+ 1408    0    0 |    c = 1
+
+
+
+--------------------------------------------------
+
+Experiment 9B:
+(teste SVM)
+
+SVM
+Kernel -> Default (ver valor)
+k-fold -> k=5
+N instances -> (100%)
+Time to build = 189.68s
+Time to test all instances = 14:20 (min:sec)
+Start at: 14:21:01
+
+Output saved at: classFacebook-svm-kernel1-100%-kfold5.txt
+
+=== Summary ===
+
+Correctly Classified Instances       64792               69.4955 %
+Incorrectly Classified Instances     28440               30.5045 %
+Kappa statistic                          0     
+Mean absolute error                      0.2034
+Root mean squared error                  0.451 
+Relative absolute error                 65.0506 %
+Root relative squared error            114.0629 %
+Total Number of Instances            93232     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0,000    0,000    ?          0,000    ?          ?        0,500     0,124     -1
+                 0,000    0,000    ?          0,000    ?          ?        0,500     0,181     0
+                 1,000    1,000    0,695      1,000    0,820      ?        0,500     0,695     1
+Weighted Avg.    0,695    0,695    ?          0,695    ?          ?        0,500     0,531     
+
+=== Confusion Matrix ===
+
+     a     b     c   <-- classified as
+     0     0 11596 |     a = -1
+     0     0 16844 |     b = 0
+     0     0 64792 |     c = 1
+
+
+
+--------------------------------------------------
+
+--------------------------------------------------
+
+--------------------------------------------------
+
+--------------------------------------------------
+
+--------------------------------------------------
 
